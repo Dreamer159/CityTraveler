@@ -9,7 +9,6 @@ namespace CityTraveler.Entities
     public class User
     {
         public string FullName { get; set; }
-
         public string Email { get; set; }
         public Guid Id { get; set; }
         public string Password { get; set; }
@@ -17,7 +16,7 @@ namespace CityTraveler.Entities
 
         public IEnumerable<string> SavedWays { get; set; } // change IEnumerable 
         public IEnumerable<string> FavouritePlace { get; set; } // change IEnumerable 
-        public IEnumerable<Way> UncompetedWays { get; set; } 
+        /// IEnumerable<Way> UncompetedWays { get; set; } 
         public UserRole  Role {get; set;}
 
 
