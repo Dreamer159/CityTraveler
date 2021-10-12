@@ -7,7 +7,8 @@ namespace CityTraveler.Entities
 {
     public class Sightseeing : Location
     {
-        // Name, Coordinates, Description, Feedback, ID from abstract class Location
+        // Name, Coordinates, Description, Feedback, ID
+        // from abstract class Location
         public string History { set; get; }
     }
 }
