@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class CompletedWays
+    public class CompletedWays
     {
      
         string Name { get; set; }

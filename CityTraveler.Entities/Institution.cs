@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Institution
+    public class Institution
     {
         public Institution()
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Way
+    public class Way
     {
         public Way()
         {
