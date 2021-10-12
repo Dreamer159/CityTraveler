@@ -17,7 +17,7 @@ namespace CityTraveler.Entities
 
         public IEnumerable<string> SavedWays { get; set; } // change IEnumerable 
         public IEnumerable<string> FavouritePlace { get; set; } // change IEnumerable 
-        public IEnumerable<string> UncompetedWays { get; set; } // change IEnumerable 
+        public IEnumerable<Way> UncompetedWays { get; set; } 
         public UserRole  Role {get; set;}
 
 
