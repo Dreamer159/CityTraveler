@@ -8,13 +8,7 @@ namespace CityTraveler.Entities
 {
     class Way
     {
-        public Way()
-        {
-
-        }
-
-
-
+  
         string Name { get; set; }
 
         // Need to change type of PointList

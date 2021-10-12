@@ -8,16 +8,9 @@ namespace CityTraveler.Entities
 {
     class CompletedWay
     {
-        public CompletedWay()
-        {
-
-        }
+       
 
         string Name { get; set; }
-          
-
-
-
 
         string Description { get; set; }
 

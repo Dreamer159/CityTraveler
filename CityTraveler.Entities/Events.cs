@@ -8,13 +8,7 @@ namespace CityTraveler.Entities
 {
     class Events
     {
-        public Events()
-        {
-
-        }
-
-
-
+      
         string Name { get; set; }
 
         // Need to change adress
