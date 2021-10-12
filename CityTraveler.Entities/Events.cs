@@ -18,6 +18,8 @@ namespace CityTraveler.Entities
         // Need to change adress
         string Adress { get; set; }
 
+
+
         // Need to change type of coordinates
         int Coordinates { get; set; }
 
