@@ -8,6 +8,10 @@ namespace CityTraveler.Entities
 {
     class Way
     {
+        public Way()
+        {
+
+        }
   
         string Name { get; set; }
 
