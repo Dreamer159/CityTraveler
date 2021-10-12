@@ -17,6 +17,8 @@ namespace CityTraveler.Entities
           
 
 
+
+
         string Description { get; set; }
 
         // Need to change type of Feedback

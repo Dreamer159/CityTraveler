@@ -11,6 +11,8 @@ namespace CityTraveler.Entities
         string Name { get; set; }
 
 
+
+
         // Need to change tepe of adress
         string Adress { get; set; }
         string Descroption { get; set; }

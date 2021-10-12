@@ -13,6 +13,8 @@ namespace CityTraveler.Entities
 
         }
 
+
+
         string Name { get; set; }
 
         // Need to change adress
