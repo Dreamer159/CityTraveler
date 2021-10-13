@@ -9,7 +9,9 @@ namespace CityTraveler.Infrastructure.Interfaces
     public interface IUserManagementService : IServiceMetadata
     {
         public IEnumerable<IUser> Users { get; set; }
+        public bool SetUsers(IEnumerable<IUser> users);
         public bool UpdateUserData(IUser user);
+        public bool BlockUser(Guid userId);
         public bool UnblockUser(Guid userId);
         public bool RemoveUser(Guid userId);
         public IEnumerable<IUser> GetUsers(int skip = 0, int take = 10);
