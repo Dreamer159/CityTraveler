@@ -11,7 +11,7 @@ namespace CityTraveler.Infrastructure.Interfaces.Service
         //no replies in our service
         // IEnumerable<ITrip> Reviews { get; set; } //comments, likes,images //TripService.Trips
         //  IEnumerable<IEntertaiment> ReviewsEn { get; set; }
-        bool AddReview(Guid ent, IReview rev, ParameterType parameterType);
+        bool AddReview(IReview rev);
 
        /* ITrip AddReviewTrip(Guid trip, IReview rev);
         IEnumerable<IEntertaiment> RemoveReview(IEntertaiment ent, Guid IdReview);

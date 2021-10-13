@@ -18,9 +18,7 @@ namespace CityTraveler.Infrastructure.Interfaces.Service
         public IEntertaiment GetEntertainmentByTitle(string title);
         public IEntertaiment GetEntertainmentByStreet(IStreet street);
         public IEntertaiment GetEntertainmentByCoordinates(ICoordinates street);
-        public bool UpdateEntertainment(IEntertaiment entertaiment);
-
-
+        public IEnumerable<IEntertaiment> GetEntartainmentyRating(Guid ratingId, Guid tripId);
 
 
     }
