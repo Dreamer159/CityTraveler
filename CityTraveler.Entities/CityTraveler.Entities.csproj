@@ -1,12 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Base\" />
-    <Folder Include="Trip\" />
+    <Compile Remove="Base\**" />
+    <Compile Remove="Trip\**" />
+    <EmbeddedResource Remove="Base\**" />
+    <EmbeddedResource Remove="Trip\**" />
+    <None Remove="Base\**" />
+    <None Remove="Trip\**" />
   </ItemGroup>
 
   <ItemGroup>
