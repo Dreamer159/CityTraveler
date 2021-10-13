@@ -8,8 +8,8 @@ namespace CityTraveler.Entities
 {
     public enum UserRole
     {
-        user,
-        contentmanager,
-        admin
+        User,
+        ContentManager,
+        Admin
     }
 }
