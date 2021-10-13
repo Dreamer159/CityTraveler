@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Infrastructure.Interfaces.Service
 {
-    interface ITripService:IServiceMetadata
+    public interface ITripService:IServiceMetadata
     {
         public bool AddNewTrip(ITrip newTrip);
 
-        public bool DeleteTrip(ITrip trip);
+        public bool DeleteTrip(Guid tripId);
 
-        public IEnumerable<ITrip> GetTrips(IEnumerable<Guid> guids);
+        public IEnumerable<ITrip> GetTrips();
 
         public ITrip GetTripById(Guid tripId);
 
