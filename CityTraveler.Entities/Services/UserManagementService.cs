@@ -18,6 +18,36 @@ namespace CityTraveler.Entities
         public string Title { get; set; }
         public string Description { get; set; }
 
+        public bool SetUsers(IEnumerable<IUser> users)
+        {
+            try
+            {
+                Users = users;
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool BlockUser(Guid userId)
+        {
+            try
+            {
+                User updated = (User)Users.FirstOrDefault<IUser>(x => x.Id == userId);
+                updated.Blocked = true;
+                Users = Users.Where(x => x.Id != userId).Append<IUser>(updated);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public IUser GetUserByEmail(string email)
         {
             return Users.FirstOrDefault(x => x.ContactInfo.Email == email);
