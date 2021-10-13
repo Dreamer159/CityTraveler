@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Trip : ITrip
+    public class Trip : ITrip
     {
         public DateTime TripStart { get ; set; }
         public DateTime TripEnd { get; set; }
