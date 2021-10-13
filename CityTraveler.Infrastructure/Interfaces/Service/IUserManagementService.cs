@@ -16,6 +16,8 @@ namespace CityTraveler.Infrastructure.Interfaces
         public IEnumerable<IUser> GetUsers(IEnumerable<Guid> guids);
         public IUser GetUserById(Guid userId);
         public IUser GetUserByEmail(string email);
+
+        
     }   
 }
 
