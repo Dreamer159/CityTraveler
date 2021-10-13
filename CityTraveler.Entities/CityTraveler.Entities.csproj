@@ -5,12 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
+    <Folder Include="Base\" />
+    <Folder Include="Services\" />
+    <Folder Include="Trip\" />
+=======
     <Compile Remove="Base\**" />
     <Compile Remove="Trip\**" />
     <EmbeddedResource Remove="Base\**" />
     <EmbeddedResource Remove="Trip\**" />
     <None Remove="Base\**" />
     <None Remove="Trip\**" />
+>>>>>>> fb5931c3a01dd56151ed9d8b15edfb49b7441fb8
   </ItemGroup>
 
   <ItemGroup>
