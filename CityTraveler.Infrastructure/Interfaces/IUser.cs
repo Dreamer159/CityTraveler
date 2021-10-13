@@ -16,5 +16,6 @@ namespace CityTraveler.Infrastructure.Interfaces
         public IContactInfo ContactInfo { get; set; }
         public IEnumerable<ITrip> HistoryTrips { get; set; }
         public IEnumerable<ITrip> ActiveTrips { get; set; }
+        public bool Blocked { get; set; }
     }
 }
