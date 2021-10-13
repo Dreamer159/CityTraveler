@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Street : IStreet
+   public  class Street : IStreet
     {
         public IEnumerable<ICoordinates> Coordinates { get; set; }
         public Guid Id { get; set; }
