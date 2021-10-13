@@ -8,8 +8,8 @@ namespace CityTraveler.Entities
 {
     public class City
     {
-        public IEnumerable<Institution> Institution { get; set; }  
-        public IEnumerable<Events> Events { get; set; }  
-        public IEnumerable<Sightseeing> Sightseeing { get; set; } 
+        public string Title { get; set; }
+        //public IEnumerable<Institution> Institution { get; set; }  
+//        public IEnumerable<Sightseeing> Sightseeing { get; set; } 
     }
 }

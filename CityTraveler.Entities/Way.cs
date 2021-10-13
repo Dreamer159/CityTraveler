@@ -23,10 +23,22 @@ namespace CityTraveler.Entities
 
         DateTime RoadTime { get; set; }
 
-
+        bool IsCompleted { get; set; }
 
         // Need to create class Trip?
         DateTime TripDate { get; set; }
+        //from completed way
+
+       // string Name { get; set; }
+
+        string Description { get; set; }
+
+        // Need to change type of Feedback
+        string Feedback { get; set; }
+
+        int Cost { get; set; }
+
+        DateTime PostingDate { get; set; }
 
 
 
