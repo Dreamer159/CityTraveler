@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CityTraveler.Infrastructure.Interfaces
 {
     public interface IServiceContext
-    {
+    { 
         public void SetServices(IEnumerable<IServiceMetadata> services);       
         public IServiceMetadata GetService(string serviceName);
     }   
