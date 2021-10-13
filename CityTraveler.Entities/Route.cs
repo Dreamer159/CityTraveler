@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Route : IRoute
+    public class Route : IRoute
     {
         public IEnumerable<ICoordinates> Coordinates { get; set ; }
         public TimeSpan OptimalSpent { get ; set ; }
