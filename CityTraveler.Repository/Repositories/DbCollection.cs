@@ -16,5 +16,14 @@ namespace CityTraveler.Repository.DbContext
         {
             RequestManager = new DbRequestManager<T>(conn);
         }
+
+        public async Task Load(string collectionName)
+        {
+            if (RequestManager != null)
+            {
+                var query = $"SELECT * FROM {collectionName}";
+                Collection = (await RequestManager.SendQueryAsync(query, null, false)).ToList();
+            }
+        }
     }
 }

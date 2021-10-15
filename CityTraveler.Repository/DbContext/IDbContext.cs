@@ -9,6 +9,8 @@ namespace CityTraveler.Repository.DbContext
 {
     public interface IDbContext
     {
+        public Task InitializeContext();
+
         public IDbCollection<ITrip> Trips { get; set; }
         public IDbCollection<IUser> Users { get; set; }
         public IDbCollection<IStreet> Streets { get; set; }

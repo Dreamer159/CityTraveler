@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CityTraveler.Repository.DbContext;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,19 @@ namespace CityTraveler.Controllers
     {
         private readonly ILogger<TripController> _logger;
 
-        public TripController(ILogger<TripController> logger)
+        public TripController(ILogger<TripController> logger, IDbContext context)
         {
+            
             _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            
+            var conn = "Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=CityTraveler;Integrated Security=SSPI;";
+            var syncManager = new DbSyncManager(conn);
+            var context = new DbContext(conn, syncManager);
+            await context.InitializeContext();
             return new JsonResult(1);
         }
     }

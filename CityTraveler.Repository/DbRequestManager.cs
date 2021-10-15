@@ -19,6 +19,7 @@ namespace CityTraveler.Repository
         {
             _connectionString = connectionString;
         }
+
         public async Task<int> SendRequestAsync(string query, object param, bool isStoredProcedure, int timeout)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))

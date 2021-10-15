@@ -10,14 +10,24 @@ namespace CityTraveler.Repository.DbContext
     public class DbContext : IDbContext
     {
         private readonly string _connectionString;
+        private readonly IDbSyncManager _dbSync;
 
-        public DbContext(string connectionString)
+        public DbContext(string connectionString, IDbSyncManager dbSync)
         {
             _connectionString = connectionString;
+            _dbSync = dbSync;
         }
 
-        public void InitializeContext()
+        public async Task InitializeContext()
         {
+            await _dbSync.CreateTables("dbo");
+            /*await _dbSync.StartSync();
+
+            if (_dbSync.IsFirst)
+            {
+                await _dbSync.CreateTables("dbo");
+            }*/
+
             Trips = new DbCollection<ITrip>(_connectionString);
             Users = new DbCollection<IUser>(_connectionString);
             Routes = new DbCollection<IRoute>(_connectionString);
@@ -31,6 +41,32 @@ namespace CityTraveler.Repository.DbContext
             Addresses = new DbCollection<IAddress>(_connectionString);
             Landskapes = new DbCollection<ILandskape>(_connectionString);
             Institutions = new DbCollection<IInstitution>(_connectionString);
+
+            if (_dbSync.IsSynchronized)
+            {
+                await DataLoadAsync();
+            }
+            else 
+            {
+                throw new ArgumentException("Database is not synchronized with current context.");
+            }
+        }
+
+        private async Task DataLoadAsync()
+        {
+            await Trips.Load(nameof(Trips));
+            await Users.Load(nameof(Users));
+            await Routes.Load(nameof(Routes));
+            await Events.Load(nameof(Events));
+            await Images.Load(nameof(Images));
+            await Prices.Load(nameof(Prices));
+            await Streets.Load(nameof(Streets));
+            await Ratings.Load(nameof(Ratings));
+            await Reviews.Load(nameof(Reviews));
+            await Comments.Load(nameof(Comments));
+            await Addresses.Load(nameof(Addresses));
+            await Landskapes.Load(nameof(Landskapes));
+            await Institutions.Load(nameof(Institutions));
         }
 
         public IDbCollection<ITrip> Trips { get; set; }

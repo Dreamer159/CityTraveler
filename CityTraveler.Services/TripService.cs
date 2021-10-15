@@ -9,7 +9,6 @@ using CityTraveler.Services.Interfaces;
 namespace CityTraveler.Services
 {
     public class TripService : ITripService
-
     {
         public bool IsActive { get; set; }
         public string Version { get; set; }
@@ -34,7 +33,7 @@ namespace CityTraveler.Services
             throw new NotImplementedException();
         }
 
-        public Dictionary<Guid, Guid> GetTripByLandscape(Guid landscapeId, Guid tripId)
+        public IEnumerable<ITrip> GetTripByPlace(Guid placeId)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +43,7 @@ namespace CityTraveler.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ITrip> GetTrips()
+        public IEnumerable<ITrip> GetTrips(int skip = 0, int take = 10)
         {
             throw new NotImplementedException();
         }

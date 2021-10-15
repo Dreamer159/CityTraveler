@@ -13,10 +13,10 @@ namespace CityTraveler.Services.Interfaces
         Task<IReview> AddReview(IReview rev);
         Task<IReview> AddReviewTrip(Guid tripId, IReview rev);
         Task<bool> RemoveReview(Guid reviewId);
-        IEnumerable<IEntertaiment> GetReviews();
+        IEnumerable<IReview> GetReviews(int skip = 0, int take = 10);
         IEnumerable<IReview> GetUserReviews(Guid userId);
-        IEnumerable<IReview> GetTripReviews(ITrip tripId);
-        IEnumerable<IReview> GetObjectReviews(Guid objectId);
-        IReview PostRating(IRating rating, Guid reviewId);
+        IEnumerable<IReview> GetTripReviews(Guid tripId);
+        IEnumerable<IReview> GetObjectReviews(Guid objectId, PlaceType type);
+        Task<IReview> PostRating(IRating rating, Guid reviewId);
     }
 }

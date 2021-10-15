@@ -22,5 +22,10 @@ namespace CityTraveler.Entities
             Created = DateTime.Now;
             Modified = DateTime.Now;
         }
+
+        public Rating()
+        {
+
+        }
     }
 }

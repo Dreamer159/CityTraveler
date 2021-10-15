@@ -1,5 +1,7 @@
 ﻿using CityTraveler.Infrastructure.Enums;
 using CityTraveler.Infrastructure.Interfaces;
+using CityTraveler.Repository.DbContext;
+using CityTraveler.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,77 +10,82 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Services
 {
-    public class SocialMediaService //: ISocialMedia
+    public class SocialMediaService : ISocialMediaService
     {
-        public IEnumerable<ITrip> TripReviews { get; set; }
-        public IEnumerable<IEntertaiment> PlacesReviews { get ; set; }
-
-
-        public IEnumerable<IEntertaiment> AddReview(Guid ent, IReview rev)
+        private readonly IServiceContext _serviceContext;
+        private readonly IDbContext _dbContext;
+        public SocialMediaService(IServiceContext serviceContext, IDbContext dbContext)
         {
-            IEntertaiment updated = PlacesReviews.FirstOrDefault(x => x.Id == ent);
-            updated.Reviews.Append(rev);
-            PlacesReviews = PlacesReviews.Where(x=>x.Id != ent);
-            return PlacesReviews.Append(updated);
-
+            _dbContext = dbContext;
+            _serviceContext = serviceContext;
         }
 
-        public bool AddReview(Guid ent, IReview rev, ParameterType parameterType)
+        public async Task<IReview> AddReview(IReview rev)
         {
-            throw new NotImplementedException();
+            _dbContext.Reviews.Collection.Add(rev);
+
+            var query = $"";
+
+            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
         }
 
-        public bool AddReview(IReview rev)
+        public async Task<IReview> AddReviewTrip(Guid tripId, IReview rev)
         {
-            throw new NotImplementedException();
+            _dbContext.Reviews.Collection.Add(rev);
+
+            var query = $"";
+
+            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
         }
 
-        public IEnumerable<ITrip> AddReviewTrip(Guid trip, IReview rev)
-         {
-            ITrip updated = TripReviews.FirstOrDefault(x => x.Id == trip);
-            //TripReviews = updated.Reviews.Append(rev);
-            TripReviews = TripReviews.Where(x => x.Id != trip);
-             return TripReviews.Append<ITrip>(updated);
-         }
+        public IEnumerable<IReview> GetObjectReviews(Guid objectId, PlaceType type)
+        {
+            switch (type)
+            {
+                case PlaceType.Event:
+                    return _dbContext.Events.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
+                case PlaceType.Institution:
+                    return _dbContext.Institutions.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
+                case PlaceType.Landscape:
+                    return _dbContext.Landskapes.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
+                default:
+                    return Enumerable.Empty<IReview>();
+            }
+        }
 
-         public IEnumerable<IEntertaiment> GetReviews(IEntertaiment ent, IReview rev)
-         {
-             throw new NotImplementedException();
-         }
+        public IEnumerable<IReview> GetReviews(int skip = 0, int take = 10)
+        {
+            return _dbContext.Reviews.Collection.Skip(skip).Take(take);
+        }
 
-         public IEnumerable<ITrip> GetReviews(ITrip trip)
-         {
-             throw new NotImplementedException();
-         }
+        public IEnumerable<IReview> GetTripReviews(Guid tripId)
+        {
+            return _dbContext.Trips.Collection.FirstOrDefault(x => x.Id == tripId).Reviews;
+        }
 
-         public IEnumerable<IEntertaiment> GetReviewsOfUser(Guid id)
-         {
-             throw new NotImplementedException();
-         }
+        public IEnumerable<IReview> GetUserReviews(Guid userId)
+        {
+            return _dbContext.Reviews.Collection.Where(x => x.OwnerID == userId);
+        }
 
-         public IEnumerable<ITrip> GetReviewsOfUserInTrip(Guid id)
-         {
-             throw new NotImplementedException();
-         }
+        public async Task<IReview> PostRating(IRating rating, Guid reviewId)
+        {
+            _dbContext.Ratings.Collection.Add(rating);
 
-         public IEntertaiment GiveRating(Guid IdOwner, IRating rating, IEntertaiment ent)
-         {
-             throw new NotImplementedException();
-         }
+            var review = _dbContext.Reviews.Collection.FirstOrDefault(x => x.Id == reviewId);
+            review.Rating = rating;
+            var query = $"";
 
-         public IEntertaiment GiveRating(Guid IdOwner, IRating rating, ITrip trip)
-         {
-             throw new NotImplementedException();
-         }
+            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
+        }
 
-         public IEnumerable<IEntertaiment> RemoveReview(IEntertaiment ent, Guid IdReview)
-         {
-             throw new NotImplementedException();
-         }
+        public async Task<bool> RemoveReview(Guid reviewId)
+        {
+            _dbContext.Reviews.Collection.RemoveAll(x => x.Id == reviewId);
+            var query = $"";
 
-         public IEnumerable<ITrip> RemoveReview(ITrip trip, Guid IdReview)
-         {
-             throw new NotImplementedException();
-         }
+            var affectedReviews = await _dbContext.Reviews.RequestManager.SendRequestAsync(query, null, false);
+            return affectedReviews > 0;
+        }
     }
 }

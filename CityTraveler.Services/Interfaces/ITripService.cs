@@ -13,11 +13,11 @@ namespace CityTraveler.Services.Interfaces
 
         public bool DeleteTrip(Guid tripId);
 
-        public IEnumerable<ITrip> GetTrips();
+        public IEnumerable<ITrip> GetTrips(int skip = 0, int take = 10);
 
         public ITrip GetTripById(Guid tripId);
 
-        public Dictionary<Guid, Guid> GetTripByLandscape(Guid landscapeId, Guid tripId);
+        public IEnumerable<ITrip> GetTripByPlace(Guid placeId);
 
         public Dictionary<Guid, Guid> GetTripByRating(Guid ratingId, Guid tripId);
 

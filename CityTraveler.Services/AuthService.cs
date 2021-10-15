@@ -17,7 +17,15 @@ namespace CityTraveler.Services
         {
             _context = context;
         }
+
         public async Task<IUser> Login(LoginModel model)
+        {
+            var query = $"";
+
+            return await _context.Users.RequestManager.ExecuteScalarAsync(query, null, false);
+        }
+
+        public async Task<IUser> Register(RegisterModel model)
         {
             var query = $"";
 
@@ -32,12 +40,6 @@ namespace CityTraveler.Services
             return affectedUsers > 0;
         }
 
-        public async Task<IUser> Register(RegisterModel model)
-        {
-            var query = $"";
-
-            return await _context.Users.RequestManager.ExecuteScalarAsync(query, null, false);
-        }
 
         public async Task<bool> Unblock(UnblockModel model)
         {

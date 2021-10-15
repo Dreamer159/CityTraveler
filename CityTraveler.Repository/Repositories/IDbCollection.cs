@@ -11,5 +11,6 @@ namespace CityTraveler.Repository.DbContext
     {
         public IDbRequestManager<T> RequestManager { get; set; }
         public List<T> Collection { get; set; }
+        public Task Load(string collectionName);
     }
 }

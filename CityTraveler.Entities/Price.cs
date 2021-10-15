@@ -29,5 +29,10 @@ namespace CityTraveler.Entities
             Description = description;
             Value = price;
         }
+
+        public Price()
+        {
+
+        }
     }
 }
