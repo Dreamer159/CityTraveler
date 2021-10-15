@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CityTraveler.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,25 +7,20 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    public class User
+    public class User : IUser
     {
-        public string FullName { get; set; }
-        public string Email { get; set; }
+        public IImage Avatar { get; set; }
+        public IEnumerable<IImage> Images { get; set; }
+        public string UserName { get; set; }
+        public string PasswordHash { get; set; }
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
+        public IContactInfo ContactInfo { get; set; }
+        public IEnumerable<ITrip> HistoryTrips { get; set; }
+        public IEnumerable<ITrip> ActiveTrips { get; set; }
+        public bool Blocked { get; set; }
         public Guid Id { get; set; }
-        public string Password { get; set; }
-        public string Avatar { get; set; }
-
-        public IEnumerable<string> SavedWays { get; set; } // change IEnumerable 
-        public IEnumerable<string> FavouritePlace { get; set; } // change IEnumerable 
-        /// IEnumerable<Way> UncompetedWays { get; set; } 
-        public UserRole  Role {get; set;}
-
-
-        
-
-
-
-
-
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
     }
 }

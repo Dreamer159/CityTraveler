@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CityTraveler.Entities
+namespace CityTraveler.Infrastructure.Enums
 {
-    public class SocialMediaService
+    public enum ParameterType
     {
+        Trip,
+        Entertaiment
     }
 }
