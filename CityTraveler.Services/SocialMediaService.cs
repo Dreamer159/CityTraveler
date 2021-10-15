@@ -1,26 +1,25 @@
 ﻿using CityTraveler.Infrastructure.Enums;
 using CityTraveler.Infrastructure.Interfaces;
-using CityTraveler.Infrastructure.Interfaces.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CityTraveler.Entities
+namespace CityTraveler.Services
 {
-    public class SocialMediaService : ISocialMedia
+    public class SocialMediaService //: ISocialMedia
     {
-        public IEnumerable<ITrip> Reviews { get; set; }
-        public IEnumerable<IEntertaiment> ReviewsEn { get ; set; }
+        public IEnumerable<ITrip> TripReviews { get; set; }
+        public IEnumerable<IEntertaiment> PlacesReviews { get ; set; }
 
 
         public IEnumerable<IEntertaiment> AddReview(Guid ent, IReview rev)
         {
-            IEntertaiment updated = ReviewsEn.FirstOrDefault(x => x.Id == ent);
-            updated.Reviews.Append<IReview>(rev);
-            ReviewsEn =  ReviewsEn.Where(x=>x.Id != ent);
-            return ReviewsEn.Append<IEntertaiment>(updated);
+            IEntertaiment updated = PlacesReviews.FirstOrDefault(x => x.Id == ent);
+            updated.Reviews.Append(rev);
+            PlacesReviews = PlacesReviews.Where(x=>x.Id != ent);
+            return PlacesReviews.Append(updated);
 
         }
 
@@ -29,12 +28,17 @@ namespace CityTraveler.Entities
             throw new NotImplementedException();
         }
 
-        /* public IEnumerable<ITrip> AddReviewTrip(Guid trip, IReview rev)
+        public bool AddReview(IReview rev)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ITrip> AddReviewTrip(Guid trip, IReview rev)
          {
-             ITrip updated = Reviews.FirstOrDefault(x => x.Id == trip);
-             updated.Reviews.Append<IReview>(rev);
-             ReviewsEn = ReviewsEn.Where(x => x.Id != trip);
-             return ReviewsEn.Append<ITrip>(updated);
+            ITrip updated = TripReviews.FirstOrDefault(x => x.Id == trip);
+            //TripReviews = updated.Reviews.Append(rev);
+            TripReviews = TripReviews.Where(x => x.Id != trip);
+             return TripReviews.Append<ITrip>(updated);
          }
 
          public IEnumerable<IEntertaiment> GetReviews(IEntertaiment ent, IReview rev)
@@ -75,6 +79,6 @@ namespace CityTraveler.Entities
          public IEnumerable<ITrip> RemoveReview(ITrip trip, Guid IdReview)
          {
              throw new NotImplementedException();
-         }*/
+         }
     }
 }
