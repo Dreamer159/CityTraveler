@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Entities
 {
-    class Trip : ITrip
+    public class Trip : ITrip
     {
         public DateTime TripStart { get ; set; }
         public DateTime TripEnd { get; set; }
@@ -26,5 +26,7 @@ namespace CityTraveler.Entities
         public DateTime Modified { get ; set ; }
         public string Title { get ; set ; }
         public string Description { get; set; }
+        public Guid TemplateId { get; set; }
+        public double AverageRating { get; set; }
     }
 }

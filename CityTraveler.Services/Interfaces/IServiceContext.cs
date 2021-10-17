@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CityTraveler.Infrastructure.Interfaces
+namespace CityTraveler.Services.Interfaces
 {
     public interface IServiceContext
-    {
+    { 
         public void SetServices(IEnumerable<IServiceMetadata> services);       
         public IServiceMetadata GetService(string serviceName);
     }   
