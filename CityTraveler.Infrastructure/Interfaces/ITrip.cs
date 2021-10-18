@@ -15,8 +15,9 @@ namespace CityTraveler.Infrastructure.Interfaces
         public IEnumerable<IRating> Ratings { get; set; }
         public IUser Owner { get; set; }
         public IEnumerable<IReview> Reviews { get; set; }
-        public ITrip Template { get; set; }
+        public Guid TemplateId { get; set; }
         public ConcurrentDictionary<Guid, IRoute> RoutesDictionary { get; set; }
         public IPrice Price { get; set; }
+        public double AverageRating { get; set; }
     }
 }
