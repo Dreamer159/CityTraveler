@@ -7,9 +7,8 @@ namespace CityTraveler.Domain.Entities
 {
     public class EventModel : Entertaiment
     {
+        //To JSON
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-
-        public virtual ICollection<TripModel> Trips { get; set; } = new List<TripModel>();
     }
 }

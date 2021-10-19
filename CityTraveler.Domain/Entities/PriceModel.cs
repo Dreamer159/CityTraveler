@@ -16,8 +16,8 @@ namespace CityTraveler.Domain.Entities
         public virtual TripModel Trip { get; set; }
     }
 
-    public class InstitutionPriceModel : PriceModel
+    public class EntertaimentPriceModel : PriceModel
     {
-        public virtual InstitutionModel Institution { get; set; }
+        public virtual Entertaiment Entertaiment { get; set; }
     }
 }
