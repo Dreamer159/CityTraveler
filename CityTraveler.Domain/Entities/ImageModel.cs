@@ -21,7 +21,9 @@ namespace CityTraveler.Domain.Entities
 
     public class EntertaimentImageModel : ImageModel
     {
-        public virtual Entertaiment Entertaiment { get; set; }
+        public virtual EventModel EventModel { get; set; }
+        public virtual LandskapeModel LandskapeModel { get; set; }
+        public virtual InstitutionModel InstitutionModel { get; set; }
     }
 
     public class ReviewImageModel : ImageModel

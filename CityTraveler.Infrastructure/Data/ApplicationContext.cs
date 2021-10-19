@@ -21,11 +21,13 @@ namespace CityTraveler.Infrastucture.Data
         public DbSet<AddressModel> Addresses { get; set; }
         public DbSet<CommentModel> Comments { get; set; }
         public DbSet<CoordinatesModel> Coordinates { get; set; }
-        public DbSet<EventModel> Events { get; set; }
         public DbSet<ImageModel> Images { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
+
+        public DbSet<EventModel> Events { get; set; }
         public DbSet<InstitutionModel> Institutions { get; set; }
         public DbSet<LandskapeModel> Landskapes { get; set; }
+
         public DbSet<ReviewModel> Reviews { get; set; }
         public DbSet<StreetModel> Streets { get; set; }
         public DbSet<TripModel> Trips { get; set; }
@@ -49,21 +51,32 @@ namespace CityTraveler.Infrastucture.Data
             builder.Entity<ReviewModel>().HasMany(x => x.Images).WithOne(x => x.Review).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.NoAction);
             builder.Entity<ReviewModel>().HasOne(x => x.Rating).WithOne(x => x.Review).HasForeignKey<RatingModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<AddressModel>().HasOne(x => x.Coordinates).WithOne(x => x.Address).HasForeignKey<CoordinatesModel>(x => x.Id).OnDelete(DeleteBehavior.NoAction);
-            builder.Entity<EventModel>().HasOne(x => x.Address).WithOne(x => (EventModel)x.Entertaiment).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<LandskapeModel>().HasOne(x => x.Address).WithOne(x => (LandskapeModel)x.Entertaiment).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<InstitutionModel>().HasOne(x => x.Address).WithOne(x => (InstitutionModel)x.Entertaiment).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<EventModel>().HasMany(x => x.Reviews).WithOne(x => (EventModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<LandskapeModel>().HasMany(x => x.Reviews).WithOne(x => (LandskapeModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<InstitutionModel>().HasMany(x => x.Reviews).WithOne(x => (InstitutionModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<EventModel>().HasMany(x => x.Images).WithOne(x => (EventModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<LandskapeModel>().HasMany(x => x.Images).WithOne(x => (LandskapeModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<InstitutionModel>().HasMany(x => x.Images).WithOne(x => (InstitutionModel)x.Entertaiment).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+
+            //not added
+            builder.Entity<EventModel>().HasOne(x => x.Address).WithOne(x => x.EventModel).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<LandskapeModel>().HasOne(x => x.Address).WithOne(x => x.LandskapeModel).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<InstitutionModel>().HasOne(x => x.Address).WithOne(x => x.InstitutionMode).HasForeignKey<EntertaimentAddressModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EventModel>().HasMany(x => x.Reviews).WithOne(x => x.EventModel).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<LandskapeModel>().HasMany(x => x.Reviews).WithOne(x => x.LandskapeModel).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<InstitutionModel>().HasMany(x => x.Reviews).WithOne(x => x.InstitutionMode).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EventModel>().HasMany(x => x.Images).WithOne(x => x.EventModel).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<LandskapeModel>().HasMany(x => x.Images).WithOne(x => x.LandskapeModel).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<InstitutionModel>().HasMany(x => x.Images).WithOne(x => x.InstitutionModel).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+
+            //added
+            builder.Entity<EventModel>().HasMany(x => x.Trips).WithMany(x => x.Events);
+            builder.Entity<InstitutionModel>().HasMany(x => x.Trips).WithMany(x => x.Institutions);
+            builder.Entity<LandskapeModel>().HasMany(x => x.Trips).WithMany(x => x.Landskapes);
+
             builder.Entity<InstitutionModel>().HasMany(x => x.Prices).WithOne(x => x.Institution).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<TripModel>().HasMany(x => x.Images).WithOne(x => x.Trip).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<TripModel>().HasOne(x => x.Price).WithOne(x => x.Trip).HasForeignKey<TripPriceModel>(x => x.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<TripModel>().HasMany(x => x.Institutions).WithMany(x => x.Trips);
+            /*builder.Entity<TripModel>().HasMany(x => x.Institutions).WithMany(x => x.Trips);
             builder.Entity<TripModel>().HasMany(x => x.Landskapes).WithMany(x => x.Trips);
-            builder.Entity<TripModel>().HasMany(x => x.Events).WithMany(x => x.Trips);
+            builder.Entity<TripModel>().HasMany(x => x.Events).WithMany(x => x.Trips);*/
             builder.Entity<CommentStatus>().HasKey(x => x.ValueId).HasName("PK_CommentStatus");
             builder.Entity<InstitutionType>().HasKey(x => x.ValueId).HasName("PK_InstitutionType");
             builder.Entity<PlaceType>().HasKey(x => x.ValueId).HasName("PK_PlaceType");

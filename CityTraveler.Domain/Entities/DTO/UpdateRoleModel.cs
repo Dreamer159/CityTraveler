@@ -9,6 +9,6 @@ namespace CityTraveler.Entities.DTO
     public class UpdateRoleModel
     {
         public string UserName { get; set; }
-        public UserRole Role { get; set; }
+       // public UserRole Role { get; set; }
     }
 }

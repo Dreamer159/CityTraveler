@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 
 namespace CityTraveler.Domain.Entities
 {
-    public class Entertaiment : Entity, IDescribable
+    public abstract class Entertaiment : Entity, IDescribable
     {
         public virtual ICollection<EntertaimentImageModel> Images { get; set; } = new List<EntertaimentImageModel>();
         public virtual ICollection<ReviewModel> Reviews { get; set; } = new List<ReviewModel>();

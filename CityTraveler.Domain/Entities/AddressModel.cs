@@ -20,6 +20,8 @@ namespace CityTraveler.Domain.Entities
 
     public class EntertaimentAddressModel : AddressModel
     {
-        public virtual Entertaiment Entertaiment { get; set; }
+        public virtual EventModel EventModel { get; set; }
+        public virtual LandskapeModel LandskapeModel { get; set; }
+        public virtual InstitutionModel InstitutionMode { get;set; }
     }
 }

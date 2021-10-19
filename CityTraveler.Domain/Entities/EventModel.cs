@@ -9,7 +9,6 @@ namespace CityTraveler.Domain.Entities
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-
         public virtual ICollection<TripModel> Trips { get; set; } = new List<TripModel>();
     }
 }
