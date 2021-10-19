@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CityTraveler.Domain.Entities;
 using CityTraveler.Services.Interfaces;
 
 namespace CityTraveler.Services
@@ -17,7 +18,7 @@ namespace CityTraveler.Services
         public string Title { get; set; }
         public string Description { get; set; }
 
-        /*public bool AddNewTrip(ITrip newTrip)
+        public bool AddNewTrip(TripModel newTrip)
         {
             throw new NotImplementedException();
         }
@@ -27,24 +28,19 @@ namespace CityTraveler.Services
             throw new NotImplementedException();
         }
 
-        public ITrip GetTripById(Guid tripId)
+        public TripModel GetTripById(Guid tripId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ITrip> GetTripByPlace(Guid placeId)
+        public IEnumerable<TripModel> GetTripByPlace(Guid placeId)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<Guid, Guid> GetTripByRating(Guid ratingId, Guid tripId)
+        public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10)
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<ITrip> GetTrips(int skip = 0, int take = 10)
-        {
-            throw new NotImplementedException();
-        }*/
     }
 }
