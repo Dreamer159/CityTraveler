@@ -20,32 +20,16 @@ namespace CityTraveler.Infrastucture.Data
                 _context.SaveChanges();
             }
 
-            if (!_context.InstitutionTypes.Any())
+            if (!_context.EntertainmentType.Any())
             {
                 _context.AddRange(
-                    InstitutionType.Cafe,
-                    InstitutionType.Cinema,
-                    InstitutionType.Hostel,
-                    InstitutionType.Hotel,
-                    InstitutionType.Museum,
-                    InstitutionType.Restourant,
-                    InstitutionType.Shop,
-                    InstitutionType.Supermarket,
-                    InstitutionType.Theater,
-                    InstitutionType.TransportStation);
+                    EntertainmentType.Event,
+                    EntertainmentType.Institution,
+                    EntertainmentType.Landskape);
 
                 _context.SaveChanges();
             }
 
-            if (!_context.PlaceTypes.Any())
-            {
-                _context.AddRange(
-                    PlaceType.Event,
-                    PlaceType.Institution,
-                    PlaceType.Landscape);
-
-                _context.SaveChanges();
-            }
 
             if (!_context.TripStatuses.Any())
             {

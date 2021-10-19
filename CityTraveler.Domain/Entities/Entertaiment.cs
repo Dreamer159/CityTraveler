@@ -16,5 +16,7 @@ namespace CityTraveler.Domain.Entities
         public virtual ICollection<EntertaimentPriceModel> Prices { get; set; } = new List<EntertaimentPriceModel>();
         public string Title { get; set; }
         public string Description { get; set; }
+
+        //Need to create a json for institution's and event's properties  
     }
 }
