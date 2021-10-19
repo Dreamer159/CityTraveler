@@ -11,6 +11,7 @@ namespace CityTraveler.Domain.Entities
         public virtual CoordinatesModel Coordinates { get; set; }
         public string HouseNumber { get; set; }
         public string ApartmentNumber { get; set; }
+        
     }
 
     public class StreetAddressModel : AddressModel
@@ -20,6 +21,11 @@ namespace CityTraveler.Domain.Entities
 
     public class EntertaimentAddressModel : AddressModel
     {
-        public virtual Entertaiment Entertaiment { get; set; }
+        //public virtual LandskapeModel Landskapes { get; set;}
+        //public virtual InstitutionModel Institutions { get; set;}
+        //public virtual EventModel eventModel { get; set; }
+
+        public virtual Entertaiment Entertaiments { get; set; }
+
     }
 }
