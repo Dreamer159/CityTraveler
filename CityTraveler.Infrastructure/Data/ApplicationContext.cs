@@ -28,6 +28,8 @@ namespace CityTraveler.Infrastucture.Data
         public DbSet<StreetModel> Streets { get; set; }
         public DbSet<TripModel> Trips { get; set; }
         public DbSet<PriceModel> Prices { get; set; }
+        
+        public DbSet<TripImageModel> TripImages { get; set; }
 
         // enums tables
 
