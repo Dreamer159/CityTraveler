@@ -17,6 +17,8 @@ namespace CityTraveler.Services.Interfaces
         //id of object? 
         public Task<bool> UpdateStreet(StreetModel street);
         public Task<bool> RemoveStreet(Guid streetId);
+        //longtitude, latitude method
+        //add task to all methods
         public StreetModel FindStreetByCoordinates(Guid coordID);
         public AddressModel FindAddressByCoordinates(Guid coordID);
         public IEnumerable<EntertaimentModel> FindEntertainmentByStreet(Guid streetId);
