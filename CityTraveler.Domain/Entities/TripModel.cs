@@ -10,7 +10,7 @@ namespace CityTraveler.Domain.Entities
     {
         public DateTime TripStart { get; set; }
         public DateTime TripEnd { get; set; }
-        public virtual ICollection<Entertaiment> Entertaiment { get; set; } = new List<Entertaiment>();
+        public virtual ICollection<EntertaimentModel> Entertaiment { get; set; } = new List<EntertaimentModel>();
         public virtual ICollection<ApplicationUserModel> Users { get; set; } = new List<ApplicationUserModel>();
         public virtual ICollection<TripImageModel> Images { get; set; } = new List<TripImageModel>();
         public Guid TemplateId { get; set; }
