@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CityTraveler.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +9,17 @@ namespace CityTraveler.Services.Interfaces
 {
     public interface ITripService : IServiceMetadata
     {
-        /*public bool AddNewTrip(ITrip newTrip);
+        public bool AddNewTrip(TripModel newTrip);
 
         public bool DeleteTrip(Guid tripId);
 
-        public IEnumerable<ITrip> GetTrips(int skip = 0, int take = 10);
+        public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10);
 
-        public ITrip GetTripById(Guid tripId);
+        public TripModel GetTripById(Guid tripId);
 
-        public IEnumerable<ITrip> GetTripByPlace(Guid placeId);
+        public IEnumerable<TripModel> GetTripByPlace(Guid placeId);
 
-        public Dictionary<Guid, Guid> GetTripByRating(Guid ratingId, Guid tripId);*/
+        
 
 
 

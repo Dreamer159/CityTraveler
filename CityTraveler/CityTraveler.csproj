@@ -62,4 +62,6 @@
     </ItemGroup>
   </Target>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://github.com/go-vela/types/releases/latest/download/schema.json" /></VisualStudio></ProjectExtensions>
+
 </Project>
