@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Services.Interfaces
 {
-    public interface IEntertainmentService
+    public interface IEntertainmentService : IServiceMetadata
     {
-        public bool AddEntertainment(EntertaimentModel entertaiment);
-        public bool SetEntertaiment(IEnumerable<EntertaimentModel> entertaiments);
-        public bool UpdateEntertainment(EntertaimentModel entertaiment);
-        public bool RemoveEntertainment(Guid id);
+        public Task<bool> AddEntertainment(EntertaimentModel entertaiment);
+        public Task<bool> SetEntertaiment(IEnumerable<EntertaimentModel> entertaiments);
+        public Task<bool> UpdateEntertainment(EntertaimentModel entertaiment);
+        public Task<bool> RemoveEntertainment(Guid id);
         public IEnumerable<EntertaimentModel> GetAll();
         public IEnumerable<EntertaimentModel> GetEntertainments(IEnumerable<Guid> guids);
-        public EntertaimentModel GetEntertainmentById(Guid guids);
-        public EntertaimentModel GetEntertainmentByTitle(string title);
+        public Task<EntertaimentModel> GetEntertainmentById(Guid guids);
+        public Task<EntertaimentModel> GetEntertainmentByTitle(string title);
         public IEnumerable<EntertaimentModel> GetEntertainmentsByStreet(StreetModel street);
-        public EntertaimentModel GetEntertainmentByCoordinates(CoordinatesModel street);
+        public Task<EntertaimentModel> GetEntertainmentByCoordinates(CoordinatesModel street);
         public IEnumerable<EntertaimentModel> GetEntartainmentByMinRating(int averageRating);
         public IEnumerable<EntertaimentModel> GetEntartainmentByMaxRating(int averageRating);
 

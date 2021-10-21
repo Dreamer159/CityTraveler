@@ -14,93 +14,20 @@ namespace CityTraveler.Services
     public class SocialMediaService : ISocialMediaService
     {
         private readonly ApplicationContext _dbContext;
+
+        public bool IsActive { get; set; }
+        public string Version { get; set; }
+
         public SocialMediaService(ApplicationContext dbContext)
         {
             _dbContext = dbContext;
         }
-        /*private readonly IServiceContext _serviceContext;
-        private readonly IDbContext _dbContext;
-        public SocialMediaService(IServiceContext serviceContext, IDbContext dbContext)
-        {
-            _dbContext = dbContext;
-            _serviceContext = serviceContext;
-        }
-
-        public async Task<IReview> AddReview(IReview rev)
-        {
-            _dbContext.Reviews.Collection.Add(rev);
-
-            var query = $"";
-
-            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
-        }
-
-        public async Task<IReview> AddReviewTrip(Guid tripId, IReview rev)
-        {
-            _dbContext.Reviews.Collection.Add(rev);
-
-            var query = $"";
-
-            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
-        }
-
-        public IEnumerable<IReview> GetObjectReviews(Guid objectId, PlaceType type)
-        {
-            switch (type)
-            {
-                case PlaceType.Event:
-                    return _dbContext.Events.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
-                case PlaceType.Institution:
-                    return _dbContext.Institutions.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
-                case PlaceType.Landscape:
-                    return _dbContext.Landskapes.Collection.FirstOrDefault(x => x.Id == objectId).Reviews;
-                default:
-                    return Enumerable.Empty<IReview>();
-            }
-        }
-
-        public IEnumerable<IReview> GetReviews(int skip = 0, int take = 10)
-        {
-            return _dbContext.Reviews.Collection.Skip(skip).Take(take);
-        }
-
-        public IEnumerable<IReview> GetTripReviews(Guid tripId)
-        {
-            return _dbContext.Trips.Collection.FirstOrDefault(x => x.Id == tripId).Reviews;
-        }
-
-        public IEnumerable<IReview> GetUserReviews(Guid userId)
-        {
-            return _dbContext.Reviews.Collection.Where(x => x.OwnerID == userId);
-        }
-
-        public async Task<IReview> PostRating(IRating rating, Guid reviewId)
-        {
-            _dbContext.Ratings.Collection.Add(rating);
-
-            var review = _dbContext.Reviews.Collection.FirstOrDefault(x => x.Id == reviewId);
-            review.Rating = rating;
-            var query = $"";
-
-            return await _dbContext.Reviews.RequestManager.ExecuteScalarAsync(query, null, false);
-        }
-
-        public async Task<bool> RemoveReview(Guid reviewId)
-        {
-            _dbContext.Reviews.Collection.RemoveAll(x => x.Id == reviewId);
-            var query = $"";
-
-            var affectedReviews = await _dbContext.Reviews.RequestManager.SendRequestAsync(query, null, false);
-            return affectedReviews > 0;
-        }*/
-        public async Task<ReviewModel> AddReviewEntertainment(Guid enterId, ReviewModel rev)
+        public async Task<EntertainmentReviewModel> AddReviewEntertainment(Guid enterId, EntertainmentReviewModel rev)
         {
             try
             {
-                EntertaimentModel en = _dbContext.Entertaiments.FirstOrDefault(x => x.Id == enterId);
-                DbSet<EntertaimentModel> entertaimentModels = (DbSet<EntertaimentModel>)_dbContext.Entertaiments.Where(x => x.Id != enterId);
-                en.Reviews.Add(rev);
-                _dbContext.Entertaiments.Add(en);
+                rev.EntertaimentId = enterId;
+                _dbContext.Reviews.Add(rev);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e) 
@@ -110,53 +37,130 @@ namespace CityTraveler.Services
             return rev;
         }
 
-        public async Task<ReviewModel> AddReviewTrip(Guid tripId, ReviewModel rev)
+        public async Task<TripReviewModel> AddReviewTrip(Guid tripId, TripReviewModel rev)
         {
-            //trip doesn`t have reviews in current version
-
-            /*try
+            try
             {
-                TripModel en = _dbContext.Trips.FirstOrDefault(x => x.Id == tripId);
-                DbSet<EntertaimentModel> entertaimentModels = (DbSet<EntertaimentModel>)_dbContext.Entertaiments.Where(x => x.Id != tripId);
-                en.Add(rev);
-                _dbContext.Entertaiments.Add(en);
+                rev.TripId = tripId;
+                _dbContext.Reviews.Add(rev);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 return rev;
-            }*/
+            }
             return rev;
         }
 
         public IEnumerable<ReviewModel> GetObjectReviews(Guid objectId)
         {
-            throw new NotImplementedException();
+            EntertaimentModel e = _dbContext.Entertaiments.FirstOrDefault(x=> x.Id == objectId);
+            TripModel t = _dbContext.Trips.FirstOrDefault(x => x.Id == objectId);
+            if (e != null)
+                return e.Reviews;
+            else if (t != null)
+                return t.Reviews;
+            else
+                return null;
         }
 
         public IEnumerable<ReviewModel> GetReviews(int skip = 0, int take = 10)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<ReviewModel> GetTripReviews(Guid tripId)
-        {
-            throw new NotImplementedException();
+            return _dbContext.Reviews.Skip(skip).Take(take);
         }
 
         public IEnumerable<ReviewModel> GetUserReviews(Guid userId)
         {
-            throw new NotImplementedException();
+            return _dbContext.Reviews.Where(x=>x.UserId == userId);
         }
 
-        public Task<ReviewModel> PostRating(RatingModel rating, Guid reviewId)
+        public async Task<ReviewModel> PostRating(RatingModel rating, Guid reviewId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ReviewModel re = await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == reviewId);
+                _dbContext.Reviews.Remove(re);
+                re.Rating = rating;
+                re.RatingId = rating.Id;
+                _dbContext.Reviews.Add(re);
+                return re;
+            }
+            catch (Exception e) 
+            {
+                return null;
+            }
+
         }
 
-        public Task<bool> RemoveReview(Guid reviewId)
+        public async Task<bool> RemoveReview(Guid reviewId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ReviewModel re =await _dbContext.Reviews.FirstOrDefaultAsync(x => x.Id == reviewId);
+                _dbContext.Reviews.Remove(re);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> AddComment(CommentModel comment, Guid reviewId) 
+        {
+            try
+            {
+                comment.ReviewId = reviewId;
+                _dbContext.Comments.Add(comment);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e) 
+            {
+                return false;
+            }
+        }
+        public async Task<bool> RemoveComment(Guid commentId, Guid reviewId)
+        {
+            try
+            {
+                CommentModel comment = await _dbContext.Comments.FirstOrDefaultAsync(x=>x.ReviewId == reviewId && x.Id == commentId);
+                _dbContext.Comments.Remove(comment);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> AddImage(ReviewImageModel image, Guid reviewId) 
+        {
+            try
+            {
+                image.ReviewId = reviewId;
+                _dbContext.Images.Add(image);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> RemoveImage(Guid reviewImageId, Guid reviewId) 
+        {
+            try
+            {
+                ReviewImageModel image = (ReviewImageModel) await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == reviewImageId);
+                _dbContext.Images.Remove(image);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }
