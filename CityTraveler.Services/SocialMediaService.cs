@@ -52,7 +52,6 @@ namespace CityTraveler.Services
             return rev;
         }
 
-        //not in one class
         public IEnumerable<ReviewModel> GetObjectReviews(Guid objectId)
         {
             EntertaimentModel e = _dbContext.Entertaiments.FirstOrDefault(x=> x.Id == objectId);
