@@ -122,5 +122,10 @@ namespace CityTraveler.Services
                 return false;
             }
         }
+
+        public async Task<EntertaimentModel> GetEntertainmentByAddress(AddressModel address)
+        {
+            return await _context.Entertaiments.FirstOrDefaultAsync(x => x.Address == address);
+        }
     }
 }
