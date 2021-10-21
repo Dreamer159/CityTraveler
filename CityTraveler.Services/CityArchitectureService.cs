@@ -12,102 +12,14 @@ namespace CityTraveler.Services
     public class CityArchitectureService : ICityArchitectureService
     {
         private readonly ApplicationContext _dbContext;
+
         public bool IsActive { get; set; }
         public string Version { get; set; }
-        public Guid Id { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
 
         public CityArchitectureService(ApplicationContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        /*public async Task<bool> AddObjectToCity(IEvent ev)
-        {
-            _dbContext.Events.Collection.Add(ev);
-
-            var query = $"";
-
-            var affectedObjects = await _dbContext.Events.RequestManager.SendRequestAsync(query, null, false);
-            return affectedObjects > 0;
-        }
-
-        public async Task<bool> AddObjectToCity(ILandskape landskape)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> AddStreet(IStreet street)
-        {
-            _dbContext.Streets.Collection.Add(street);
-
-            var query = $"";
-
-            var affectedObjects = await _dbContext.Streets.RequestManager.SendRequestAsync(query, null, false);
-            return affectedObjects > 0;
-        }
-
-        public async Task<bool> BuildCityMap()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> RemoveObjectById(Guid objectId, PlaceType type)
-        {
-            switch (type)
-            {
-                case PlaceType.Event:
-                    _dbContext.Events.Collection.RemoveAll(x => x.Id == objectId);
-                    break;
-                case PlaceType.Institution:
-                    _dbContext.Institutions.Collection.RemoveAll(x => x.Id == objectId);
-                    break;
-                case PlaceType.Landscape:
-                    _dbContext.Landskapes.Collection.RemoveAll(x => x.Id == objectId);
-                    break;
-                default:
-                    break;
-            }
-
-            var query = $"";
-
-            var affectedObjects = await _dbContext.Events.RequestManager.SendRequestAsync(query, null, false);
-            return affectedObjects > 0;
-        }
-
-        public async bool RemoveStreet(Guid streetId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateCityObject(IInstitution institute)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateCityObject(IEvent ev)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateCityObject(ILandskape landskape)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateStreet(IStreet street)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> ValidateCityMap()
-        {
-            throw new NotImplementedException();
-        }
-*/
         public async Task<bool> AddEntertainmentToCity(EntertaimentModel entertaiment)
         {
             try
@@ -127,6 +39,7 @@ namespace CityTraveler.Services
         {
             try
             {
+                _dbContext.Entertaiments.Update(entertaiment);
                 DbSet<EntertaimentModel> en = (DbSet<EntertaimentModel>)_dbContext.Entertaiments.Where(x => x.Id != entertaiment.Id);
                 _dbContext.Entertaiments.Add(entertaiment);
                 await _dbContext.SaveChangesAsync();
@@ -137,14 +50,14 @@ namespace CityTraveler.Services
                 return false;
             }
             return true;
-    
         }
 
         public async Task<bool> RemoveEntertainmentById(Guid objectId)
         {
             try
             {
-                _dbContext.Entertaiments = (DbSet<EntertaimentModel>)_dbContext.Entertaiments.Where(x => x.Id != objectId);
+                EntertaimentModel mo= await _dbContext.Entertaiments.FirstOrDefaultAsync(x => x.Id == objectId);
+                _dbContext.Entertaiments.Remove(mo);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
@@ -201,30 +114,64 @@ namespace CityTraveler.Services
             return true;
         }
 
-        public Task<bool> BuildCityMap()
+        public async Task<bool> ValidateCityMap()
         {
-            throw new NotImplementedException();
+            return validateAddresses().Result && validateEntertainments().Result;
         }
 
-        public Task<bool> ValidateCityMap()
+        public async Task<bool> validateEntertainments() 
         {
-            throw new NotImplementedException();
+            try
+            {
+                EntertaimentModel en = await _dbContext.Entertaiments.FirstOrDefaultAsync(x => x.Address == null);
+                EntertaimentModel en1 = await _dbContext.Entertaiments.FirstOrDefaultAsync(x => x.Type == null);
+                if (en == null && en1 == null)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception e) 
+            {
+                return false;
+            }
+        }
+        public async Task<bool> validateAddresses()
+        {
+            try
+            {
+                AddressModel ad = await _dbContext.Addresses.FirstOrDefaultAsync(x => x.Coordinates == null);
+                AddressModel ad1 = await _dbContext.Addresses.FirstOrDefaultAsync(x => x.Street == null);
+                if (ad == null && ad1 == null)
+                    return true;
+                else
+                    return false;
+
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
-        public StreetModel FindStreetByCoordinates(Guid coordID)
+        public async Task<StreetModel> FindStreetByCoordinates(Guid coordID)
         {
-            AddressModel ad =  _dbContext.Addresses.FirstOrDefault(x=>x.CoordinatesId == coordID);
+            AddressModel ad = await _dbContext.Addresses.FirstOrDefaultAsync(x=>x.CoordinatesId == coordID);
             return ad.Street;
         }
-
-        public AddressModel FindAddressByCoordinates(Guid coordID)
+        public async Task<StreetModel> FindStreetByCoordinates(double longtitude, double latitude) 
         {
-            return _dbContext.Addresses.FirstOrDefault(x => x.CoordinatesId == coordID);
+            AddressModel ad = await _dbContext.Addresses.FirstOrDefaultAsync(x => x.Coordinates.Longitude == longtitude && x.Coordinates.Latitude == latitude);
+            return ad.Street;
+        }
+        public async Task<AddressModel> FindAddressByCoordinates(Guid coordID)
+        {
+            return await _dbContext.Addresses.FirstOrDefaultAsync(x => x.CoordinatesId == coordID);
         }
 
         public IEnumerable<EntertaimentModel> FindEntertainmentByStreet(Guid streetId)
         {
-            return _dbContext.Entertaiments.Where(x=>x.Address.StreetId == streetId);
+            return  _dbContext.Entertaiments.Where(x=>x.Address.StreetId == streetId);
         }
 
         public IEnumerable<EntertaimentModel> FindEntertainmentByCoordinate(Guid coorId)
@@ -237,9 +184,9 @@ namespace CityTraveler.Services
             return _dbContext.Entertaiments.Where(x => x.Address.StreetId == addressId);
         }
 
-        public AddressModel FindAddressByStreetHouse(Guid streetId, string houseNum)
+        public async Task<AddressModel> FindAddressByStreetHouse(Guid streetId, string houseNum)
         {
-            return _dbContext.Addresses.FirstOrDefault(x=>x.StreetId == streetId && x.HouseNumber == houseNum);
+            return await _dbContext.Addresses.FirstOrDefaultAsync(x=>x.StreetId == streetId && x.HouseNumber == houseNum);
         }
 
         public IEnumerable<AddressModel> FindAddressByHouse(string houseNum)
@@ -250,6 +197,11 @@ namespace CityTraveler.Services
         public IEnumerable<EntertaimentModel> FindEntertainmentByStreetTitle(string streetTitle)
         {
             return _dbContext.Entertaiments.Where(x => x.Address.Street.Title == streetTitle);
+        }
+
+        public async Task<AddressModel> FindAddressByCoordinates(double longtitude, double latitude)
+        {
+            return await _dbContext.Addresses.FirstOrDefaultAsync(x => x.Coordinates.Longitude == longtitude&&x.Coordinates.Latitude==latitude);
         }
     }
 }

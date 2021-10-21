@@ -7,15 +7,20 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Services.Interfaces
 {
-    public interface ISocialMediaService 
+    public interface ISocialMediaService : IServiceMetadata
     {
-        Task<ReviewModel> AddReviewEntertainment(Guid enterId, ReviewModel rev);
-        Task<ReviewModel> AddReviewTrip(Guid tripId, ReviewModel rev);
+        Task<EntertainmentReviewModel> AddReviewEntertainment(Guid enterId, EntertainmentReviewModel rev);
+        Task<TripReviewModel> AddReviewTrip(Guid tripId, TripReviewModel rev);
         Task<bool> RemoveReview(Guid reviewId);
         IEnumerable<ReviewModel> GetReviews(int skip = 0, int take = 10);
         IEnumerable<ReviewModel> GetUserReviews(Guid userId);
-        IEnumerable<ReviewModel> GetTripReviews(Guid tripId);
         IEnumerable<ReviewModel> GetObjectReviews(Guid objectId);
+        //TODO
         Task<ReviewModel> PostRating(RatingModel rating, Guid reviewId);
+        Task<bool> AddComment(CommentModel comment, Guid reviewId);
+        Task<bool> RemoveComment(Guid commentId, Guid reviewId);
+        Task<bool> AddImage(ReviewImageModel comment, Guid reviewId);
+        Task<bool> RemoveImage(Guid reviewImageId, Guid reviewId);
+
     }
 }
