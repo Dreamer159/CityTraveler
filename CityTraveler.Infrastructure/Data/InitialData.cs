@@ -49,21 +49,21 @@ namespace CityTraveler.Infrastucture.Data
             _context.Entertaiments.Add(new EntertaimentModel 
             { 
                 Title = "hotel", 
-                Description = "trteter",
+                Description = RandomString(15),
                 Type = _context.EntertainmentType.FirstOrDefault(x => x.Id == EntertainmentType.Institution.Id),
                 Address = new AddressModel()
                 {
-                    ApartmentNumber = "3d",
+                    ApartmentNumber = RandomString(3),
                     Coordinates = new CoordinatesModel()
                     { 
-                        Latitude = 1, 
-                        Longitude = 2 
+                        Latitude = rand.NextDouble(), 
+                        Longitude = rand.NextDouble() 
                     },
-                    HouseNumber = "numberOne",
+                    HouseNumber = RandomString(3),
                     Street = new StreetModel()
                     {
                         Title = "Street",
-                        Description = "Desc"
+                        Description = RandomString(15)
                     }
                 }
             });
