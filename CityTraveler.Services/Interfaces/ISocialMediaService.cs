@@ -9,8 +9,8 @@ namespace CityTraveler.Services.Interfaces
 {
     public interface ISocialMediaService : IServiceMetadata
     {
-        Task<ReviewModel> AddReviewEntertainment(Guid enterId, ReviewModel rev);
-        Task<ReviewModel> AddReviewTrip(Guid tripId, ReviewModel rev);
+        Task<EntertainmentReviewModel> AddReviewEntertainment(Guid enterId, EntertainmentReviewModel rev);
+        Task<TripReviewModel> AddReviewTrip(Guid tripId, TripReviewModel rev);
         Task<bool> RemoveReview(Guid reviewId);
         IEnumerable<ReviewModel> GetReviews(int skip = 0, int take = 10);
         IEnumerable<ReviewModel> GetUserReviews(Guid userId);

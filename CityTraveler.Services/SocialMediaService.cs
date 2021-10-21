@@ -22,7 +22,7 @@ namespace CityTraveler.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<ReviewModel> AddReviewEntertainment(Guid enterId, ReviewModel rev)
+        public async Task<EntertainmentReviewModel> AddReviewEntertainment(Guid enterId, EntertainmentReviewModel rev)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace CityTraveler.Services
             return rev;
         }
 
-        public async Task<ReviewModel> AddReviewTrip(Guid tripId, ReviewModel rev)
+        public async Task<TripReviewModel> AddReviewTrip(Guid tripId, TripReviewModel rev)
         {
             try
             {
@@ -52,9 +52,17 @@ namespace CityTraveler.Services
             return rev;
         }
 
+        //not in one class
         public IEnumerable<ReviewModel> GetObjectReviews(Guid objectId)
         {
-            return _dbContext.Reviews.Where(x=> x.TripId==objectId || x.EntertaimentId == objectId);
+            EntertaimentModel e = _dbContext.Entertaiments.FirstOrDefault(x=> x.Id == objectId);
+            TripModel t = _dbContext.Trips.FirstOrDefault(x => x.Id == objectId);
+            if (e != null)
+                return e.Reviews;
+            else if (t != null)
+                return t.Reviews;
+            else
+                return null;
         }
 
         public IEnumerable<ReviewModel> GetReviews(int skip = 0, int take = 10)
