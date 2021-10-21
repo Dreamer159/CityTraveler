@@ -13,6 +13,8 @@ namespace CityTraveler.Domain.Entities
         public virtual ApplicationUserModel User { get; set; }
         public virtual Guid EntertaimentId { get; set; }
         public virtual EntertaimentModel Entertaiment { get; set; }
+        public virtual TripModel Trip { get; set; }
+        public virtual Guid TripId { get; set; }
         public virtual ICollection<ReviewImageModel> Images { get; set; } = new List<ReviewImageModel>();
         public virtual ICollection<CommentModel> Comments { get; set; } = new List<CommentModel>();
         public string Title { get; set; }
