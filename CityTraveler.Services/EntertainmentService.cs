@@ -14,6 +14,10 @@ namespace CityTraveler.Services
     public class EntertainmentService : IEntertainmentService
     {
         ApplicationContext _context;
+
+        public bool IsActive { get; set; }
+        public string Version { get; set; }
+
         public EntertainmentService(ApplicationContext context) 
         {
             _context = context;
@@ -35,16 +39,16 @@ namespace CityTraveler.Services
                 .SelectMany(x => x.Trips.Where(y => y.AverageRating < averageRating)).Select(x => x.Entertaiment);
         }
 
-        public EntertaimentModel GetEntertainmentByCoordinates(CoordinatesModel coordinates)
+        public async Task<EntertaimentModel> GetEntertainmentByCoordinates(CoordinatesModel coordinates)
         {
-            return _context.Entertaiments
-                .Where(x => x.Address.Coordinates == coordinates).FirstOrDefault();
+            return await _context.Entertaiments
+                .FirstOrDefaultAsync(x => x.Address.Coordinates == coordinates);
         }
 
-        public EntertaimentModel GetEntertainmentById(Guid id)
+        public async Task<EntertaimentModel> GetEntertainmentById(Guid id)
         {
-            return _context.Entertaiments
-                .Where(x => x.Id == id).FirstOrDefault();
+            return await _context.Entertaiments
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public IEnumerable<EntertaimentModel> GetEntertainmentsByStreet(StreetModel street)
@@ -53,27 +57,22 @@ namespace CityTraveler.Services
                 .Where(x => x.Address.Street == street);
         }
 
-        public EntertaimentModel GetEntertainmentByTitle(string title)
+        public async Task<EntertaimentModel> GetEntertainmentByTitle(string title)
         {
-            return _context.Entertaiments.Where(x=>x.Title == title).FirstOrDefault();
+            return await _context.Entertaiments.FirstOrDefaultAsync(x=>x.Title == title);
         }
 
         public IEnumerable<EntertaimentModel> GetEntertainments(IEnumerable<Guid> ids)
         {
-            var result = new List<EntertaimentModel>();
-            foreach (var id in ids)
-            {
-                result.Add(_context.Entertaiments.Where(x => x.Id == id).FirstOrDefault());
-            }
-            return result;
+            return _context.Entertaiments.Where(x => ids.Contains(x.Id));
         }
 
-        public bool RemoveEntertainment(Guid id)
+        public async Task<bool> RemoveEntertainment(Guid id)
         {
             try
             {
-                _context.Entertaiments.Remove(_context.Entertaiments.Where(x => x.Id == id).FirstOrDefault());
-                _context.SaveChanges();
+                _context.Entertaiments.Remove(await _context.Entertaiments.FirstOrDefaultAsync(x => x.Id == id));
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -82,11 +81,12 @@ namespace CityTraveler.Services
             }
         }
 
-        public bool SetEntertaiment(IEnumerable<EntertaimentModel> entertaiments)
+        public async Task<bool> SetEntertaiment(IEnumerable<EntertaimentModel> entertaiments)
         {
             try
             {
                 _context.Entertaiments = (DbSet<EntertaimentModel>)entertaiments;
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -95,13 +95,13 @@ namespace CityTraveler.Services
             }
         }
 
-        public bool UpdateEntertainment(EntertaimentModel entertaiment)
+        public async Task<bool> UpdateEntertainment(EntertaimentModel entertaiment)
         {
             try
             {
-                _context.Entertaiments.Remove(_context.Entertaiments.Where(x => x.Id == entertaiment.Id).FirstOrDefault());
+                _context.Entertaiments.Remove(await _context.Entertaiments.FirstOrDefaultAsync(x => x.Id == entertaiment.Id));
                 _context.Entertaiments.Add(entertaiment);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -109,12 +109,12 @@ namespace CityTraveler.Services
                 return false;
             }
         }
-        public bool AddEntertainment(EntertaimentModel entertaiment)
+        public async Task<bool> AddEntertainment(EntertaimentModel entertaiment)
         {
             try
             {
                 _context.Entertaiments.Add(entertaiment);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
