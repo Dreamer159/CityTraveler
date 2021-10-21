@@ -43,14 +43,14 @@ namespace CityTraveler.Infrastucture.Data
             }
         }
 
-        public static void SetupData(ApplicationContext _context)
+        public static void SetupData(ApplicationContext context)
         {
             var rand = new Random();
-            _context.Entertaiments.Add(new EntertaimentModel 
+            context.Entertaiments.Add(new EntertaimentModel 
             { 
                 Title = "hotel", 
                 Description = "trteter",
-                Type = _context.EntertainmentType.FirstOrDefault(x => x.Id == EntertainmentType.Institution.Id),
+                Type = context.EntertainmentType.FirstOrDefault(x => x.Id == EntertainmentType.Institution.Id),
                 Address = new AddressModel()
                 {
                     ApartmentNumber = "3d",
@@ -67,60 +67,7 @@ namespace CityTraveler.Infrastucture.Data
                     }
                 }
             });
-            _context.SaveChanges();
-            //_context.Add(new StreetModel { Title = RandomString(20), Description = RandomString(20) });
-            _context.SaveChanges();
-            _context.Entertaiments.Load();
-            _context.Streets.Load();
-            Console.WriteLine(_context.Entertaiments.FirstOrDefault());
-            Console.WriteLine(_context.Streets.FirstOrDefault());
-            StreetModel street = _context.Streets.FirstOrDefault();
-            EntertaimentModel e = _context.Entertaiments.FirstOrDefault();
-            /*AddressModel address = new AddressModel { HouseNumber = RandomString(5), Street = street, Entertaiment = e };
-      
-            _context.Add(address);
-            _context.SaveChanges();
-            _context.Add(new CoordinatesModel { Latitude = rand.NextDouble(), Longitude = rand.NextDouble() });
-            _context.SaveChanges();
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new EntertaimentModel { Title = "hotel", Description = "trteter", Address = _context.Addresses.FirstOrDefault(x=>x.HouseNumber == "2") });
-                //_context.Entertaiments.Add(new Entertaiment { Title = "hotel", Description = "trteter" });
-                _context.SaveChanges();
-                //_context.Entertaiments.Load();
-                EntertaimentModel t = _context.Entertaiments.FirstOrDefault(X => X.Description.Contains("tr"));
-
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new StreetModel { Title = RandomString(20), Description = RandomString(20) });
-                _context.SaveChanges();
-                _context.Streets.Load();
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new CoordinatesModel { Latitude = rand.NextDouble(), Longitude = rand.NextDouble() });
-                _context.SaveChanges();
-                _context.Coordinates.Load();
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new AddressModel { HouseNumber = "22", Coordinates = new CoordinatesModel { Latitude = 22, Longitude = 434 } });
-                _context.SaveChanges();
-                _context.Coordinates.Load();
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new CoordinatesModel { Latitude = 22, Longitude = 434 });
-                _context.SaveChanges();
-                _context.Coordinates.Load();
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                _context.Add(new ApplicationUserModel { Profile = new UserProfileModel { Name = "fff"} });
-                _context.SaveChanges();
-                _context.Coordinates.Load();
-            }        */
+           
 
         }
         private static Random random = new Random();
