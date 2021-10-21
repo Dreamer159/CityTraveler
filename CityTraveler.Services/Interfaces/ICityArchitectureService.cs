@@ -21,12 +21,12 @@ namespace CityTraveler.Services.Interfaces
         public Task<AddressModel> FindAddressByCoordinates(Guid coordID);
         public Task<AddressModel> FindAddressByCoordinates(double longtitude, double latitude);
         //TODO
-        public Task<List<EntertaimentModel>> FindEntertainmentByStreet(Guid streetId);
-        public Task<IEnumerable<EntertaimentModel>> FindEntertainmentByCoordinate(Guid streetId);
-        public Task<IEnumerable<EntertaimentModel>> FindEntertainmentByAddress(Guid streetId);
+        public IEnumerable<EntertaimentModel> FindEntertainmentByStreet(Guid streetId);
+        public IEnumerable<EntertaimentModel> FindEntertainmentByCoordinate(Guid streetId);
+        public IEnumerable<EntertaimentModel> FindEntertainmentByAddress(Guid streetId);
         public Task<AddressModel> FindAddressByStreetHouse(Guid streetId, string houseNum);
-        public Task<IEnumerable<AddressModel>> FindAddressByHouse(string houseNum);
-        public Task<IEnumerable<EntertaimentModel>> FindEntertainmentByStreetTitle(string streetTitle);
+        public IEnumerable<AddressModel> FindAddressByHouse(string houseNum);
+        public IEnumerable<EntertaimentModel> FindEntertainmentByStreetTitle(string streetTitle);
         public Task<bool> ValidateCityMap();
     }   
 }

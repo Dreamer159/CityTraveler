@@ -19,6 +19,8 @@ namespace CityTraveler.Services.Interfaces
         Task<ReviewModel> PostRating(RatingModel rating, Guid reviewId);
         Task<bool> AddComment(CommentModel comment, Guid reviewId);
         Task<bool> RemoveComment(Guid commentId, Guid reviewId);
+        Task<bool> AddImage(ReviewImageModel comment, Guid reviewId);
+        Task<bool> RemoveImage(Guid reviewImageId, Guid reviewId);
 
     }
 }

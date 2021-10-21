@@ -169,17 +169,17 @@ namespace CityTraveler.Services
             return await _dbContext.Addresses.FirstOrDefaultAsync(x => x.CoordinatesId == coordID);
         }
 
-        public async Task<List<EntertaimentModel>> FindEntertainmentByStreet(Guid streetId)
+        public IEnumerable<EntertaimentModel> FindEntertainmentByStreet(Guid streetId)
         {
-            return await _dbContext.Entertaiments.Where(x=>x.Address.StreetId == streetId).ToListAsync();
+            return  _dbContext.Entertaiments.Where(x=>x.Address.StreetId == streetId);
         }
 
-        public async Task<IEnumerable<EntertaimentModel>> FindEntertainmentByCoordinate(Guid coorId)
+        public IEnumerable<EntertaimentModel> FindEntertainmentByCoordinate(Guid coorId)
         {
             return _dbContext.Entertaiments.Where(x => x.Address.CoordinatesId == coorId);
         }
 
-        public async Task<IEnumerable<EntertaimentModel>> FindEntertainmentByAddress(Guid addressId)
+        public IEnumerable<EntertaimentModel> FindEntertainmentByAddress(Guid addressId)
         {
             return _dbContext.Entertaiments.Where(x => x.Address.StreetId == addressId);
         }
@@ -189,12 +189,12 @@ namespace CityTraveler.Services
             return await _dbContext.Addresses.FirstOrDefaultAsync(x=>x.StreetId == streetId && x.HouseNumber == houseNum);
         }
 
-        public async Task<IEnumerable<AddressModel>> FindAddressByHouse(string houseNum)
+        public IEnumerable<AddressModel> FindAddressByHouse(string houseNum)
         {
             return _dbContext.Addresses.Where(x => x.HouseNumber == houseNum);
         }
 
-        public async Task<IEnumerable<EntertaimentModel>> FindEntertainmentByStreetTitle(string streetTitle)
+        public IEnumerable<EntertaimentModel> FindEntertainmentByStreetTitle(string streetTitle)
         {
             return _dbContext.Entertaiments.Where(x => x.Address.Street.Title == streetTitle);
         }

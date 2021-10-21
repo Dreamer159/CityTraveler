@@ -127,5 +127,33 @@ namespace CityTraveler.Services
                 return false;
             }
         }
+        public async Task<bool> AddImage(ReviewImageModel image, Guid reviewId) 
+        {
+            try
+            {
+                image.ReviewId = reviewId;
+                _dbContext.Images.Add(image);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> RemoveImage(Guid reviewImageId, Guid reviewId) 
+        {
+            try
+            {
+                ReviewImageModel image = (ReviewImageModel) await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == reviewImageId);
+                _dbContext.Images.Remove(image);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }
