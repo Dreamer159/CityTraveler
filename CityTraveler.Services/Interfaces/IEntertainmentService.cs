@@ -18,7 +18,8 @@ namespace CityTraveler.Services.Interfaces
         public Task<EntertaimentModel> GetEntertainmentById(Guid guids);
         public Task<EntertaimentModel> GetEntertainmentByTitle(string title);
         public IEnumerable<EntertaimentModel> GetEntertainmentsByStreet(StreetModel street);
-        public Task<EntertaimentModel> GetEntertainmentByCoordinates(CoordinatesModel street);
+        public Task<EntertaimentModel> GetEntertainmentByCoordinates(CoordinatesModel coordinates);
+        public Task<EntertaimentModel> GetEntertainmentByAddress(AddressModel address);
         public IEnumerable<EntertaimentModel> GetEntartainmentByMinRating(int averageRating);
         public IEnumerable<EntertaimentModel> GetEntartainmentByMaxRating(int averageRating);
 
