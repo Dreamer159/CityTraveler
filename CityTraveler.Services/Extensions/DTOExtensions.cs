@@ -14,11 +14,42 @@ namespace CityTraveler.Services.Extensions
         {
             return new UserDTO()
             {
-                Name = user.Profile.Name,
-                AvatarSrc = user.Profile.AvatarSrc,
-                PhoneNumber = user.PhoneNumber,
-                Email = user.Email
+                Name = userModel.Profile.Name,
+                AvatarSrc = userModel.Profile.AvatarSrc,
+                PhoneNumber = userModel.PhoneNumber,
+                Email = userModel.Email
             };
+        }
+
+        public static ApplicationUserModel ToApplicationUser(this RegisterDTO registerModel)
+        {
+            var user = new ApplicationUserModel
+            {
+                Images = new List<UserImageModel>()
+                { new UserImageModel
+                {
+                    IsMain = true,
+                    Source = registerModel.AvatarSrc,
+                    Title = "Avatar",
+                    Description = "My best photo" } },
+                UserName = registerModel.UserName,
+                Profile = new UserProfileModel()
+                {
+                    Gender = registerModel.Gender,
+                    Name = registerModel.Name,
+                    Birthday = registerModel.Birthday,
+                    AvatarSrc = registerModel.AvatarSrc,
+                    User = new ApplicationUserModel()
+                    {
+                        UserName = registerModel.UserName,
+                        PasswordHash = registerModel.Password,
+                        Email = registerModel.Email,
+                        PhoneNumber = registerModel.PhoneNumber
+
+                    }
+                }
+            };
+            return user;
         }
     }
 }

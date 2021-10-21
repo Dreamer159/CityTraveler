@@ -28,18 +28,18 @@ namespace CityTraveler.Services
         public async Task<UserDTO> Register(RegisterDTO registerModel)
         {
             
-            var user = CreateUserFromScratch(registerModel);
+            var user = registerModel.ToApplicationUser();
             
             var result = await _signInManager.UserManager.CreateAsync(user, registerModel.Password);
                                    
             if (result.Succeeded)
             {
-                //await _signInManager.UserManager.SetLockoutEnabledAsync(user, true);// try block user
+                
                 user = await _signInManager.UserManager.FindByNameAsync(registerModel.UserName);
                 var rolesResult = await _signInManager.UserManager.AddToRoleAsync(user, Roles.User);
                  if (rolesResult.Succeeded)
                 {
-                    // good
+                    
                     var signInResult = await _signInManager.PasswordSignInAsync(user, registerModel.Password, true, false);
                     if (signInResult.Succeeded)
                     {
@@ -65,36 +65,7 @@ namespace CityTraveler.Services
             }
         }
       
-        private static ApplicationUserModel CreateUserFromScratch(RegisterDTO registerModel)
-        {
-            var user = new ApplicationUserModel
-            {
-                Images = new List<UserImageModel>() 
-                { new UserImageModel 
-                { 
-                    IsMain = true, 
-                    Source = registerModel.AvatarSrc, 
-                    Title = "Avatar", 
-                    Description = "My best photo" } },
-                UserName = registerModel.UserName,
-                Profile = new UserProfileModel()
-                {
-                    Gender = registerModel.Gender,
-                    Name = registerModel.Name,
-                    Birthday = registerModel.Birthday,
-                    AvatarSrc = registerModel.AvatarSrc,
-                    User = new ApplicationUserModel()
-                    {
-                        UserName = registerModel.UserName,
-                        PasswordHash = registerModel.Password,
-                        Email = registerModel.Email,
-                        PhoneNumber = registerModel.PhoneNumber
-
-                    }
-                }
-            };
-            return user;
-        }
+        
         public async Task<UserDTO> UpdateUserData(UpdateUserDTO updateUser)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == updateUser.UserName);
@@ -108,14 +79,18 @@ namespace CityTraveler.Services
 
         }
 
-        public async Task<UserDTO> UpdateUserLoginPassword (UpdateUserLoginPassword updateUserLoginPassword)
+        public async Task<UserDTO> UpdateUserPassword(UpdateUserPasswordDTO updateUserPassword)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == updateUserLoginPassword.UserName);
-            user.Profile.User.PasswordHash = updateUserLoginPassword.NewPassword;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-            return user.ToUserDTO(); ;
-           
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == updateUserPassword.UserName);
+            var result = await _signInManager.UserManager.ChangePasswordAsync(user, updateUserPassword.OldPassword, updateUserPassword.NewPassword);
+            if (result.Succeeded)
+            {
+                return user.ToUserDTO();
+            }
+            else
+            {
+                throw new Exception("");
+            }
         }
         public async Task<bool> SighOutUser ()
         {
@@ -134,12 +109,20 @@ namespace CityTraveler.Services
         {
             try
             {
-                UserProfileModel u = _context.UserProfiles.FirstOrDefault(x => x.Id == userId);
-                _context.UserProfiles.Remove(u);
-                await _context.SaveChangesAsync();
-                return true;
+                var user = await _signInManager.UserManager.FindByIdAsync(userId.ToString());
+
+                if (user != null)
+                {
+                    var result = await _signInManager.UserManager.DeleteAsync(user);
+
+                    return result.Succeeded;
+                }
+                else
+                {
+                    throw new Exception("User was not found!");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
