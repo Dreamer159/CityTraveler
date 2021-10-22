@@ -50,6 +50,15 @@ namespace CityTraveler.Services.Interfaces
         public IEnumerable<TripModel> OrderTripsByPriceBy();
         public IEnumerable<TripModel> OrderTripsByPriceByDesc();
 
-        
+        public Task<bool> UpdateTripTitleAsync(Guid tripId, string newTitle);
+        public Task<bool> UpdateTripDescriptionAsync(Guid tripId, string newDecription);
+
+
+        public Task<bool> AddEntertainmetToTripAsync(Guid tripId, EntertaimentModel newEntertainment);
+        public Task<bool> DeleteEntertainmentFromTrip(Guid tripId, EntertaimentModel entertainment);
+
+        //public TimeSpan SetRealSpent(  );
+
+
     }
 }
