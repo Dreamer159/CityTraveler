@@ -14,7 +14,7 @@ namespace CityTraveler.Domain.Entities
         public virtual ICollection<ApplicationUserModel> Users { get; set; } = new List<ApplicationUserModel>();
         public virtual ICollection<TripImageModel> Images { get; set; } = new List<TripImageModel>();
         public virtual ICollection<TripReviewModel> Reviews { get; set; } = new List<TripReviewModel>();
-        public Guid TemplateId { get; set; }
+        public Guid TemplateId { get; set; } 
         public virtual TripPriceModel Price { get; set; }
         public double AverageRating { get; set; }
         public string Title { get; set; }
