@@ -65,6 +65,11 @@ namespace CityTraveler.Services
         }
 
 
+        public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10)
+        {
+            return _context.Trips.Skip(skip).Take(take);
+        }
+
         public IEnumerable<TripModel> GetTripByDate(DateTime date)
         {
 
@@ -105,18 +110,12 @@ namespace CityTraveler.Services
 
         public IEnumerable<TripImageModel> GetImagesFromtrip(Guid tripId)
         {
-            return  _context.TripImages.Where(x => x.TripId == tripId);
 
+            var trip = _context.Trips.FirstOrDefault(x=>x.Id==tripId);
+            return trip.Images;
         }
-
-
-      
 
  
-        public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10)
-        {
-            return _context.Trips.Skip(skip).Take(take);
-        }
 
 
         public IEnumerable<TripModel> GetTripsOrderedByRatingBy()
@@ -128,11 +127,6 @@ namespace CityTraveler.Services
         public IEnumerable<TripModel> GetTripsOrderdByRatingByDesc()
         {
             return _context.Trips.OrderByDescending(x => x.AverageRating);
-        }
-
-        public IEnumerable<ReviewModel> GetReviewsForTrip(Guid tripId)
-        {
-            return _context.Reviews.Where(x => x.TripId == tripId);
         }
 
         public async Task<bool> AddNewReviewForTripAsync(ReviewModel newReview)
@@ -202,10 +196,77 @@ namespace CityTraveler.Services
         {
             return _context.Trips.OrderBy(x => x.Price);
         }
-
+         
         public IEnumerable<TripModel> OrderTripsByPriceByDesc()
         {
             return _context.Trips.OrderByDescending(x => x.Price);
+        }
+
+        public async Task<bool> UpdateTripTitleAsync(Guid tripId, string newTitle)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
+                trip.Title = newTitle;
+                _context.Update(trip);
+                _context.SaveChanges();
+            }
+            catch (TripServiceException e)
+            {
+                throw new TripServiceException("Exception on updating trip title!", e);
+            }
+            return true;
+        }
+
+        public async Task<bool> UpdateTripDescriptionAsync(Guid tripId, string newDecription)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
+                trip.Description = newDecription;
+                _context.Update(trip);
+                _context.SaveChanges();
+            }
+            catch (TripServiceException e)
+            {
+
+                throw new TripServiceException("Exception on updating trip description!", e);
+
+            }
+            return true;
+        }
+
+        public async  Task<bool> AddEntertainmetToTripAsync(Guid tripId, EntertaimentModel newEntertainment)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
+                trip.Entertaiment.Add(newEntertainment);
+                _context.Update(trip);
+                _context.SaveChanges();
+            }
+            catch (TripServiceException e)
+            {
+                throw new TripServiceException("Exception on adding new entertainment to trip!", e);
+            }
+            return true;
+        }
+        public async Task<bool> DeleteEntertainmentFromTrip(Guid tripId, EntertaimentModel entertainment)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
+                trip.Entertaiment.Remove(entertainment);
+                _context.Update(trip);
+                _context.SaveChanges();
+
+            }
+            catch (TripServiceException e)
+            {
+
+                throw new TripServiceException("Exception on deleting entertainment from trip!", e);
+            }
+            return true;
         }
     }
 }
