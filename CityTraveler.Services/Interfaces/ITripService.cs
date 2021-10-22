@@ -10,9 +10,9 @@ namespace CityTraveler.Services.Interfaces
 {
     public interface ITripService : IServiceMetadata
     {
-        public bool AddNewTrip(TripModel newTrip);
+        public Task<bool> AddNewTripAsync(TripModel newTrip);
 
-        public bool DeleteTrip(TripModel trip);
+        public Task<bool> DeleteTripAsync(TripModel trip);
 
         public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10);
 
@@ -20,13 +20,15 @@ namespace CityTraveler.Services.Interfaces
 
         //public IEnumerable<TripModel> GetTripByPlace(Guid placeId);
 
-        public IEnumerable<TripModel> GetTripByPlace(Guid placeId, EntertainmentType type);
 
         public IEnumerable<TripModel> GetTripByDate(DateTime date);
 
         public IEnumerable<TripModel> GetTripsByAverageRating(double rating);
 
         public IEnumerable<TripModel> GetTripsByOptimalSpent(TimeSpan optSpent);
+
+
+        public Task<IEnumerable<TripModel>> GetTripsByEntertainmentAsync(Guid entertainmentId);
         public IEnumerable<TripModel> GetTripsByEntartainmentName(string name);
 
         public IEnumerable<TripImageModel> GetImagesFromtrip(Guid tripId);
@@ -34,5 +36,20 @@ namespace CityTraveler.Services.Interfaces
 
         public IEnumerable<TripModel> GetTripsOrderedByRatingBy();
         public IEnumerable<TripModel> GetTripsOrderdByRatingByDesc();
+
+
+
+        public Task<bool> AddNewReviewForTripAsync(ReviewModel newReview);
+        public Task<bool> RemoveReviewFForTripAsync(ReviewModel review);
+       //public Task<bool> UpdateReviewForTrip(ReviewModel review);
+
+        public IEnumerable<TripModel> GetTripsByStatus(TripStatus status);
+        public Task<bool> UpdateTripSatusAsync(Guid tripId, TripStatus newStatus);
+
+        public IEnumerable<TripModel> GetTripsByPrice(double price);
+        public IEnumerable<TripModel> OrderTripsByPriceBy();
+        public IEnumerable<TripModel> OrderTripsByPriceByDesc();
+
+        
     }
 }
