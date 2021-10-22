@@ -80,6 +80,7 @@ namespace CityTraveler.Services
             {
                 _dbContext.Streets.Add(street);
                 await _dbContext.SaveChangesAsync();
+
             }
             catch (Exception e)
             {
@@ -94,8 +95,9 @@ namespace CityTraveler.Services
         {
             try
             {
-                DbSet<StreetModel> en = (DbSet<StreetModel>)_dbContext.Entertaiments.Where(x => x.Id != street.Id);
-                _dbContext.Streets.Add(street);
+                /*DbSet<StreetModel> en = (DbSet<StreetModel>)_dbContext.Entertaiments.Where(x => x.Id != street.Id);
+                _dbContext.Streets.Add(street);*/
+                _dbContext.Streets.Update(street);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
