@@ -1,4 +1,5 @@
 ﻿using CityTraveler.Domain.Entities;
+using CityTraveler.Domain.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace CityTraveler.Services.Interfaces
 {
     public interface IEntertainmentService : IServiceMetadata
     {
-        public Task<bool> AddEntertainment(EntertaimentModel entertaiment);
+        public Task<bool> AddEntertainment(EntertainmentDTO entertaiment);
         public Task<bool> SetEntertaiment(IEnumerable<EntertaimentModel> entertaiments);
         public Task<bool> UpdateEntertainment(EntertaimentModel entertaiment);
         public Task<bool> RemoveEntertainment(Guid id);

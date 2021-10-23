@@ -2,12 +2,15 @@
 using CityTraveler.Repository.DbContext;
 using CityTraveler.Services.Interfaces;
 using CityTraveler.Infrastucture.Data;
+using CityTraveler.Domain.DTO;
+using CityTraveler.Services.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CityTraveler.Services
 {
@@ -109,11 +112,11 @@ namespace CityTraveler.Services
                 return false;
             }
         }
-        public async Task<bool> AddEntertainment(EntertaimentModel entertaiment)
+        public async Task<bool> AddEntertainment(EntertainmentDTO entertaimentDTO)
         {
             try
             {
-                _context.Entertaiments.Add(entertaiment);
+                _context.Entertaiments.Add(entertaimentDTO.ToEntertaiment());
                 await _context.SaveChangesAsync();
                 return true;
             }
