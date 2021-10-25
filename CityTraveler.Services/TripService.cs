@@ -76,6 +76,10 @@ namespace CityTraveler.Services
             return _context.Trips.Where(x => x.TripStart == date);
         }
 
+        public IEnumerable<TripModel> GetTripsByName(string title)
+        {
+            return _context.Trips.Where(x=>x.Title==title);
+        }
 
         public IEnumerable<TripModel> GetTripsByAverageRating(double rating)
         {
@@ -87,13 +91,6 @@ namespace CityTraveler.Services
         {
             return _context.Trips.Where(x => x.OptimalSpent == optSpent);          
         }
-
-        public IEnumerable<TripModel> GetTripByPlace(EntertaimentModel entertaiment)
-        {
-            return _context.Trips.Where(x => x.Entertaiment == entertaiment);
-             
-        }
-
 
         public async Task<IEnumerable<TripModel>> GetTripsByEntertainmentAsync(Guid entertainmentId)
         {
@@ -107,17 +104,6 @@ namespace CityTraveler.Services
              
         }
 
-
-        public IEnumerable<TripImageModel> GetImagesFromtrip(Guid tripId)
-        {
-
-            var trip = _context.Trips.FirstOrDefault(x=>x.Id==tripId);
-            return trip.Images;
-        }
-
- 
-
-
         public IEnumerable<TripModel> GetTripsOrderedByRatingBy()
         {
             return _context.Trips.OrderBy(x => x.AverageRating);
@@ -128,38 +114,6 @@ namespace CityTraveler.Services
         {
             return _context.Trips.OrderByDescending(x => x.AverageRating);
         }
-
-        public async Task<bool> AddNewReviewForTripAsync(ReviewModel newReview)
-        {
-            try
-            {
-                _context.Reviews.Add(newReview);
-                await _context.SaveChangesAsync();
-                
-            }
-            catch (TripServiceException e)
-            {
-
-                throw new TripServiceException("Exception On Adding Review For Trip!", e);
-            }
-            return true;
-        }
-
-        public async Task<bool> RemoveReviewFForTripAsync(ReviewModel review)
-        {
-            try
-            {
-                _context.Reviews.Remove(review);
-                await _context.SaveChangesAsync();
-            }
-            catch (TripServiceException e)
-            {
-                throw new TripServiceException("Exception On Removing Trip's Review!", e);
-                
-            }
-            return true;
-        }
-
       
         public IEnumerable<TripModel> GetTripsByStatus(TripStatus status)
         {
@@ -170,18 +124,15 @@ namespace CityTraveler.Services
         {
             try
             {
-
                 var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
                 var status = await  _context.TripStatuses.FirstOrDefaultAsync(x=>x.Id==newStatus.Id);
 
                 trip.TripStatus = status;
                 _context.Update<TripModel>(trip);
-                await _context.SaveChangesAsync();
-                
+                await _context.SaveChangesAsync();              
             }
             catch (TripServiceException e)
             {
-
                 throw new TripServiceException("Exception On  Updating Trip Status!", e);
             }
             return true;
