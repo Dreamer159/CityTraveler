@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Services
 {
-    public class UserManagementService : IUserManagementService
+    public class UserManagementService// : IUserManagementService
     {
         public bool IsActive { get; set; }
         public string Version { get; set; }
@@ -42,9 +42,23 @@ namespace CityTraveler.Services
             throw new NotImplementedException();
         }
 
-        public bool UpdateUserData(IUser user)
+        public async Task<bool> RemoveUser(Guid userId)
         {
-            throw new NotImplementedException();
-        }*/
+            try
+            {
+                _context.UserProfiles.Where(x => x.Id != userId);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+        }
+
+        
     }
+
+        
 }
