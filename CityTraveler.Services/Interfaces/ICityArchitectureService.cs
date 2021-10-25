@@ -16,11 +16,12 @@ namespace CityTraveler.Services.Interfaces
         public Task<bool> AddStreet(StreetModel street);
         public Task<bool> UpdateStreet(StreetModel street);
         public Task<bool> RemoveStreet(Guid streetId);
+        public IEnumerable<AddressModel> getAddress(int skip=0,int take=10);
+        public IEnumerable<StreetModel> getStreet(int skip = 0, int take = 10);
         public Task<StreetModel> FindStreetByCoordinates(Guid coordID);
         public Task<StreetModel> FindStreetByCoordinates(double longtitude, double latitude);
         public Task<AddressModel> FindAddressByCoordinates(Guid coordID);
         public Task<AddressModel> FindAddressByCoordinates(double longtitude, double latitude);
-        //TODO
         public IEnumerable<EntertaimentModel> FindEntertainmentByStreet(Guid streetId);
         public IEnumerable<EntertaimentModel> FindEntertainmentByCoordinate(Guid streetId);
         public IEnumerable<EntertaimentModel> FindEntertainmentByAddress(Guid streetId);
