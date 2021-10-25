@@ -12,19 +12,23 @@ namespace CityTraveler.Services.Interfaces
     {
         public Task<bool> AddNewTripAsync(TripModel newTrip);
 
-        public Task<bool> DeleteTripAsync(TripModel trip);
+        public Task<bool> DeleteTripAsync(Guid tripId);
 
         public IEnumerable<TripModel> GetTrips(int skip = 0, int take = 10);
 
         public TripModel GetTripById(Guid tripId);
 
-        public IEnumerable<TripModel> GetTripByDate(DateTime date);
+        public IEnumerable<TripModel> GetTripsByDate(DateTime date);
 
         public IEnumerable<TripModel> GetTripsByName(string title);
 
         public IEnumerable<TripModel> GetTripsByAverageRating(double rating);
 
         public IEnumerable<TripModel> GetTripsByOptimalSpent(TimeSpan optSpent);
+
+        public IEnumerable<TripModel> OrderTripsByOptimalSpentBy();
+        public IEnumerable<TripModel> OrderTripsByOptimalSpentByDesc();
+
 
         public Task<IEnumerable<TripModel>> GetTripsByEntertainmentAsync(Guid entertainmentId);
         public IEnumerable<TripModel> GetTripsByEntartainmentName(string name);
@@ -44,8 +48,11 @@ namespace CityTraveler.Services.Interfaces
         public Task<bool> AddEntertainmetToTripAsync(Guid tripId, EntertaimentModel newEntertainment);
         public Task<bool> DeleteEntertainmentFromTrip(Guid tripId, EntertaimentModel entertainment);
 
-        //public TimeSpan SetRealSpent(  );
+        public IEnumerable<TripModel> GetTripsByTag(string tagString);
 
+        public IEnumerable<TripModel> GetDefaultTrips(int skip = 0, int take=10);
+        public Task<bool> SetTripAsDefault(Guid tripId);
+        public Task<bool> RemooveTripFromDefault(Guid tripId);
 
     }
 }

@@ -34,34 +34,36 @@ namespace CityTraveler.Services
             {
                 _context.Trips.Add(newTrip);
                 await _context.SaveChangesAsync();
-                
+
             }
             catch (TripServiceException e)
             {
-                throw new TripServiceException("Exception on Adding New Trip", e);
+                throw new TripServiceException("Exception on adding new trip", e);
             }
             return true;
         }
 
-        public async Task<bool> DeleteTripAsync(TripModel trip)
+        public async Task<bool> DeleteTripAsync(Guid tripId)
         {
             try
             {
+
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
                 _context.Trips.Remove(trip);
                 await _context.SaveChangesAsync();
-                
+
             }
             catch (TripServiceException e)
             {
 
-                throw new TripServiceException("Exception On Deleting Trip", e);
+                throw new TripServiceException("Exception on deleting trip", e);
             }
             return true;
         }
 
-        public TripModel GetTripById(Guid tripId)         
+        public TripModel GetTripById(Guid tripId)
         {
-            return(TripModel) _context.Trips.Where(x => x.Id == tripId);
+            return _context.Trips.FirstOrDefault(x => x.Id == tripId);
         }
 
 
@@ -70,7 +72,7 @@ namespace CityTraveler.Services
             return _context.Trips.Skip(skip).Take(take);
         }
 
-        public IEnumerable<TripModel> GetTripByDate(DateTime date)
+        public IEnumerable<TripModel> GetTripsByDate(DateTime date)
         {
 
             return _context.Trips.Where(x => x.TripStart == date);
@@ -78,43 +80,51 @@ namespace CityTraveler.Services
 
         public IEnumerable<TripModel> GetTripsByName(string title)
         {
-            return _context.Trips.Where(x=>x.Title==title);
+            return _context.Trips.Where(x => x.Title == title);
         }
 
         public IEnumerable<TripModel> GetTripsByAverageRating(double rating)
         {
             return _context.Trips.Where(x => x.AverageRating == rating);
-            
+
         }
 
         public IEnumerable<TripModel> GetTripsByOptimalSpent(TimeSpan optSpent)
         {
-            return _context.Trips.Where(x => x.OptimalSpent == optSpent);          
+            return _context.Trips.Where(x => x.OptimalSpent == optSpent);
+        }
+        public IEnumerable<TripModel> OrderTripsByOptimalSpentBy()
+        {
+            return _context.Trips.OrderBy(x => x.OptimalSpent);
         }
 
+        public IEnumerable<TripModel> OrderTripsByOptimalSpentByDesc()
+        {
+            return _context.Trips.OrderByDescending(x => x.OptimalSpent);
+        }
         public async Task<IEnumerable<TripModel>> GetTripsByEntertainmentAsync(Guid entertainmentId)
         {
-            var ent = await _context.Entertaiments.FirstOrDefaultAsync(x=>x.Id==entertainmentId);
+            var ent = await _context.Entertaiments.FirstOrDefaultAsync(x => x.Id == entertainmentId);
             return _context.Trips.Where(x => x.Entertaiment == ent);
         }
 
         public IEnumerable<TripModel> GetTripsByEntartainmentName(string name)
         {
             return _context.Trips.Where(x => x.Title == name);
-             
+
         }
 
         public IEnumerable<TripModel> GetTripsOrderedByRatingBy()
         {
             return _context.Trips.OrderBy(x => x.AverageRating);
-            
+
         }
 
         public IEnumerable<TripModel> GetTripsOrderdByRatingByDesc()
         {
             return _context.Trips.OrderByDescending(x => x.AverageRating);
         }
-      
+
         public IEnumerable<TripModel> GetTripsByStatus(TripStatus status)
         {
             return _context.Trips.Where(x => x.TripStatus == status);
@@ -124,12 +134,12 @@ namespace CityTraveler.Services
         {
             try
             {
-                var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
-                var status = await  _context.TripStatuses.FirstOrDefaultAsync(x=>x.Id==newStatus.Id);
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
+                var status = await _context.TripStatuses.FirstOrDefaultAsync(x => x.Id == newStatus.Id);
 
                 trip.TripStatus = status;
                 _context.Update<TripModel>(trip);
-                await _context.SaveChangesAsync();              
+                await _context.SaveChangesAsync();
             }
             catch (TripServiceException e)
             {
@@ -147,7 +157,7 @@ namespace CityTraveler.Services
         {
             return _context.Trips.OrderBy(x => x.Price);
         }
-         
+
         public IEnumerable<TripModel> OrderTripsByPriceByDesc()
         {
             return _context.Trips.OrderByDescending(x => x.Price);
@@ -157,7 +167,7 @@ namespace CityTraveler.Services
         {
             try
             {
-                var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
                 trip.Title = newTitle;
                 _context.Update(trip);
                 _context.SaveChanges();
@@ -173,7 +183,7 @@ namespace CityTraveler.Services
         {
             try
             {
-                var trip = await _context.Trips.FirstOrDefaultAsync(x=>x.Id==tripId);
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
                 trip.Description = newDecription;
                 _context.Update(trip);
                 _context.SaveChanges();
@@ -187,7 +197,7 @@ namespace CityTraveler.Services
             return true;
         }
 
-        public async  Task<bool> AddEntertainmetToTripAsync(Guid tripId, EntertaimentModel newEntertainment)
+        public async Task<bool> AddEntertainmetToTripAsync(Guid tripId, EntertaimentModel newEntertainment)
         {
             try
             {
@@ -216,6 +226,48 @@ namespace CityTraveler.Services
             {
 
                 throw new TripServiceException("Exception on deleting entertainment from trip!", e);
+            }
+            return true;
+        }
+
+        public IEnumerable<TripModel> GetTripsByTag(string tagString)
+        {
+            return _context.Trips.Where(x=>x.TagSting.ToLower().Contains(tagString.ToLower()));
+        }
+
+        public IEnumerable<TripModel> GetDefaultTrips(int skip = 0, int take = 10)
+        {
+            return _context.Trips.Where(x=>x.DafaultTrip==true).Skip(skip).Take(take);
+        }
+
+        public async Task<bool> SetTripAsDefault(Guid tripId)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
+                trip.DafaultTrip =true;
+                _context.Update(trip);
+                await _context.SaveChangesAsync();
+            }
+            catch (TripServiceException e)
+            {
+
+                throw new TripServiceException("Exception on setting default as defaut trip", e);
+            }
+            return true;
+        }
+        public async Task<bool> RemooveTripFromDefault(Guid tripId)
+        {
+            try
+            {
+                var trip = await _context.Trips.FirstOrDefaultAsync(x => x.Id == tripId);
+                trip.DafaultTrip = false;
+                _context.Update(trip);
+                await _context.SaveChangesAsync();
+            }
+            catch (TripServiceException e)
+            {
+                throw new TripServiceException("Exception on removing trip from default", e);
             }
             return true;
         }

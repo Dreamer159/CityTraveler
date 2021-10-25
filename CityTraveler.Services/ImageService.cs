@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace CityTraveler.Services
 {
-    public class ImageService<TEntity> : IImageService<TEntity> where TEntity:ImageModel, IServiceMetadata
+    public class ImageService<T> : IImageService<T> where T:ImageModel, IServiceMetadata
     {
 
         private ApplicationContext _context;
-        DbSet<TEntity> _dbset;
         public ImageService(ApplicationContext context)
         {
             _context = context;
+            
         }
 
         public bool IsActive { get; set ; }
         public string Version { get; set; }
 
-        public async Task<bool> AddNewImage(TEntity image)
+        public async Task<bool> AddNewImage(T image)
         {
             try
             {
@@ -55,14 +55,48 @@ namespace CityTraveler.Services
             return true;
         }
 
-        public TEntity GetImageById(Guid imageId)
+        public async Task<T> GetImageByIdAsync(Guid imageId)
         {
-            throw new NotImplementedException();
+            return (T)await _context.Images.FirstOrDefaultAsync(x=>x.Id==imageId);
         }
 
-        public IEnumerable<TEntity> GetImages()
+
+        public IEnumerable<T> GetImages(int skip = 0, int take=7)
         {
-            throw new NotImplementedException();
+            return (IEnumerable<T>)_context.Images.Skip(skip).Take(take);
         }
+        public async Task<bool> AddAvatarToUserProfile(string src)
+        {
+            try
+            {
+                _context.Add(src);
+                await _context.SaveChangesAsync();
+            }
+            catch (ImageServiceException e)
+            {
+
+                throw new ImageServiceException("Exception on adding avatar to user profile!", e);
+            }
+            return true;
+        }
+        public async Task<bool> UpdatAvatarForUserProfile(string src, Guid userId)
+        {
+            try
+            {
+                var user =await  _context.UserProfiles.FirstOrDefaultAsync(x=>x.Id==userId);
+                user.AvatarSrc = src;
+                _context.Update(user);
+                _context.SaveChanges();
+
+            }
+            catch (ImageServiceException e)
+            {
+
+                throw new ImageServiceException("Exception on updating avatar to user profile!", e);
+            }
+            return true;
+        }
+        
+
     }
 }
